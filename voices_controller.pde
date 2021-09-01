@@ -14,6 +14,8 @@ int numActiveVoices = 1;
 int initialInterval = 3000;
 
 void setup () {
+  size(1200, 900);
+
   osc_controller = new OscController();
   osc_controller.connect();
 
