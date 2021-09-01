@@ -5,10 +5,11 @@ class NoiseCircluarWalker {
   float aVel = .001;
   float rVel = .001;
   long id; 
-  float posX, posY;
   String name; 
   int index; 
   int voiceIndex; 
+  PVector pos;
+  boolean isPlaying = false;
   NoiseCircluarWalker (long _id, String _name, int _index) {
     aoff = random(10000);
     roff = random(10000);
@@ -23,24 +24,23 @@ class NoiseCircluarWalker {
     roff = roff + rVel;
     float theta = noise(aoff) * 4 * PI;
     float radius = min(map(noise(roff), 0, 0.8, minRadius, maxRadius), maxRadius);
-    posX = radius * cos( theta );
-    posY = radius * sin( theta );
-    pushMatrix();
-    noFill();
+    int posX = radius * cos( theta );
+    int posY = radius * sin( theta );
+    pos = new PVector(posX, posY);
+    // only send position if speaker is playing
+    isPlaying = false;
     for (long _id : orchestration.getCurrentSpeakerId()) {
       if (_id == id) {
-        fill(255); 
         osc_controller.sendAudioOSC(theta, radius);
+        isPlaying = true;
       }
     }
-    
     osc_controller.sendVisualOSC(theta, radius);
-    
-    translate(height/2, height/2);
-    ellipse(posX, posY, 4, 4);
-    popMatrix();
-    
   }
+
+  PVector getPosition () {
+    return pos;
+  } 
   
   void setAngleVelocity (float vel) {
     aVel = vel / 10000;

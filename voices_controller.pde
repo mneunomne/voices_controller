@@ -9,6 +9,8 @@ OscController osc_controller;
 
 Orchestration orchestration;
 
+ArrayList<NoiseCircluarWalker> walkers = new ArrayList<NoiseCircluarWalker>();
+
 int maxNumVoices = 8;
 int numActiveVoices = 1;
 int initialInterval = 3000;
