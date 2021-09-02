@@ -18,6 +18,9 @@ class Archive {
     // save audio and user list locally
     audios = json.getJSONArray("audios");
     users = json.getJSONArray("users");
+
+    // create .json points for each word in database
+    
     
     // create the moving points for each user
     for (int i = 0; i < users.size(); i++) {    
