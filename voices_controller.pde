@@ -33,6 +33,7 @@ int debug_width = 583 - 20;
 float debug_scale = debug_width / (debug_radius*2); 
 
 boolean dbLoaded = false;
+boolean firstLoaded = false;
 
 void setup () {
   size(1194, 834, P2D);
@@ -70,6 +71,12 @@ void draw () {
 
 void update() {
   if (dbLoaded) {
+    // only runs once after db is loaded. avoiding multithreading
+    if (!firstLoaded) {
+      archive.firstLoad();
+      firstLoaded = true;
+    }
+
     orchestration.update();
     for (NoiseCircularWalker walker : walkers) {
       walker.update();

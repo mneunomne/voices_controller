@@ -1,7 +1,7 @@
 class Archive {
   JSONArray audios;
   JSONArray users;
-
+  ArrayList<Word> words = new ArrayList<Word>();
   String server_url = "https://pandemic-archive-of-voices-db.herokuapp.com"; // http://localhost:7777
   
   Archive () {
@@ -20,13 +20,17 @@ class Archive {
     users = json.getJSONArray("users");
 
     // create .json points for each word in database
-    
+    for (int i = 0; i < audios.size(); i++) {    
+      JSONObject audio = audios.getJSONObject(i);
+      Word word = new Word(audio);
+      words.add(word);
+    }
     
     // create the moving points for each user
     for (int i = 0; i < users.size(); i++) {    
-      JSONObject item = users.getJSONObject(i); 
-      String name = item.getString("name");
-      String id = item.getString("id");
+      JSONObject user = users.getJSONObject(i); 
+      String name = user.getString("name");
+      String id = user.getString("id");
       NoiseCircularWalker n = new NoiseCircularWalker(id, name, i);
       walkers.add(n);
     }
@@ -55,6 +59,12 @@ class Archive {
       new_user.put("id", new_audio_data.getString("user_id"));
       new_user.put("name", new_audio_data.getString("name"));
       appendUser(new_user);
+    }
+  }
+
+  void firstLoad () {
+    for (Word word : words) {
+      word.load();
     }
   }
 

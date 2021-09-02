@@ -1,39 +1,45 @@
 class Word {
-  PGraphics pg;
-  PShape svg;
-  String path = "texts/";
+  String source_path = "C:/Users/mneunomne/archive_folder_sync/texts/";
+  String dest_path = "data/points/";
   JSONObject audio;
   String audio_id;
   String user_id;
   int img_w;
   int img_h;
 
-  ArrayList<PVector> points = new ArrayList<PVector>();
-
-  Word (JSONObject _audio) {
+  Word (JSONObject audio) {
     audio_id = audio.getString("id");
     user_id = audio.getString("user_id");
-    loadSvg();
   }
 
-  void loadSvg () {
+  void load () {
     // load svg
-    String filepath = path + id + ".svg";
+    String filepath = source_path + audio_id + ".svg";
     File f = dataFile(filepath);
     boolean exist = f.isFile();
     // dont continue if file already exists
-    if (exists) return;
-    svg = loadShape(filepath)
+    if (!exist) return;
+    println("filepath", filepath, exist);
+    // load svg image
+    PShape svg;
+    svg = loadShape(filepath);
     img_w = int(svg.width);
     img_h = int(svg.height);
-    createPoints();
+
+    // save json file
+    saveJSON(getPoints(svg));
   }
 
-  void createPoints () {
+  ArrayList<PVector> getPoints (PShape svg) {
+    ArrayList<PVector> points = new ArrayList<PVector>();
     // create points
     PGraphics pg;
-    pg = createGraphics(img_w, img_h, P2D);
+    println("[Word] size", img_w, img_h);
+    pg = createGraphics(img_w, img_h);
     pg.beginDraw();
+    pg.background(255);
+    pg.stroke(0);
+    pg.stroke(0);
     pg.shape(svg, 0, 0);
     pg.endDraw();
     pg.loadPixels();
@@ -41,16 +47,17 @@ class Word {
       for(int y = 0; y < img_h; y++) {
         int index = y * img_w + x;
         color c= pg.pixels[index];
-        if (brightness(c) > 50) {
+        if (brightness(c) < 50) {
           points.add(new PVector(x, y));
         }
       }
     }
-    // save json file
-    saveJSON();
+    return points;
   }
 
-  void saveJSON () {
+  void saveJSON (ArrayList<PVector> points) {
+    println("points", points.size());
+    JSONObject obj = new JSONObject();
     JSONArray array = new JSONArray();
     for (int i = 0; i < points.size(); i++) {
       JSONObject pos = new JSONObject();
@@ -58,7 +65,11 @@ class Word {
       pos.setFloat("y", points.get(i).y);
       array.setJSONObject(i, pos);
     }
-    saveJSONArray(values, "points/" + id + ".json");
-    println("[Word] saved " + id + ".json")
+    obj.setInt("width", img_w);
+    obj.setInt("height", img_h);
+    obj.setJSONArray("points", array);
+    saveJSONObject(obj, dest_path + audio_id + ".json");
+    // saveJSONArray(array, dest_path + audio_id + ".json");
+    println("[Word] saved " + audio_id + ".json");
   }
 }
