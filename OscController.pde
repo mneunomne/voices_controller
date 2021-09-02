@@ -73,7 +73,9 @@ class OscController {
   void onNewAudio (OscMessage theOscMessage) {
     JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
     println("[OscController] new_audio_data", new_audio_data);
-    archive.appendAudio(new_audio_data);
+    // not use direct function to avoid threading
+    newAudio = new_audio_data;
+    hasNewAudio = true;
   }
 
   void oscEvent(OscMessage theOscMessage) {

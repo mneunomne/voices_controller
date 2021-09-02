@@ -44,8 +44,8 @@ class NoiseCircularWalker {
     } else {
       pg.noFill();
     }
-    float x = pos.x * debug_scale;
-    float y = pos.y * debug_scale;
+    float x = pos.x * debugScale;
+    float y = pos.y * debugScale;
     pg.ellipse(x, y, 5, 5);
     pg.text(index, x + 5, y);
   }

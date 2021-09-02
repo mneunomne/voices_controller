@@ -126,11 +126,11 @@ public class Gui {
       pg.translate(pg.width/2, pg.height/2);
       // min/max radius
       pg.stroke(255, 0, 0);
-      pg.ellipse(0, 0, maxRadius * debug_scale, maxRadius * debug_scale);
-      pg.ellipse(0, 0, minRadius * debug_scale, minRadius * debug_scale);
+      pg.ellipse(0, 0, maxRadius * debugScale, maxRadius * debugScale);
+      pg.ellipse(0, 0, minRadius * debugScale, minRadius * debugScale);
       // projection radius
       pg.stroke(0, 0, 255);
-      pg.ellipse(0, 0, projection_radius * debug_scale, projection_radius * debug_scale);
+      pg.ellipse(0, 0, projectionRadius * debugScale, projectionRadius * debugScale);
       // draw moving circles
       pg.stroke(255);
       for (NoiseCircularWalker walker : walkers) {

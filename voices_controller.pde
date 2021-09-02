@@ -23,17 +23,20 @@ int numActiveVoices = 1;
 int initialInterval = 3000;
 
 // value in meters
-float projection_radius = 3;
+float projectionRadius = 3;
 float minRadius = 1;
 float maxRadius = 3.5;
-float debug_radius = 4;
+float debugRadius = 4;
 
-int debug_width = 583 - 20; 
+int debugWidth = 583 - 20; 
 
-float debug_scale = debug_width / (debug_radius*2); 
+float debugScale = debugWidth / (debugRadius*2); 
 
 boolean dbLoaded = false;
 boolean firstLoaded = false;
+
+JSONObject newAudio;
+boolean hasNewAudio = false;
 
 void setup () {
   size(1194, 834, P2D);
@@ -41,7 +44,7 @@ void setup () {
   cp5 = new ControlP5(this);
 
   // setup debug canvas
-  pg = createGraphics(debug_width, debug_width, P2D);
+  pg = createGraphics(debugWidth, debugWidth, P2D);
   pg.ellipseMode(RADIUS);
 
 
@@ -75,6 +78,11 @@ void update() {
     if (!firstLoaded) {
       archive.firstLoad();
       firstLoaded = true;
+    }
+
+    if (hasNewAudio) {
+      archive.addNewAudio(newAudio);
+      hasNewAudio = false;
     }
 
     orchestration.update();

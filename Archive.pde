@@ -39,10 +39,19 @@ class Archive {
     onArchiveLoaded();
   }
 
-  void appendAudio (JSONObject new_audio_data) {
+  void addNewAudio (JSONObject new_audio_data) {
     audios.append(new_audio_data);
     println("[Archive] New audio data appended, with now " + audios.size() + " audios");
+    // create points json file for new audio...
+    /*
+    Word word = new Word(new_audio_data);
+    words.add(word);
+    word.load();
+    */
+    checkForNewUser(new_audio_data);    
+  }
 
+  void checkForNewUser (new_audio_data) {
     // check if user from new audio already exists in local array
     String new_user_id = new_audio_data.getString("user_id");
     boolean hasFound = false;
