@@ -1,8 +1,8 @@
 public class Voice {
-  long currentSpeakerId;
+  String currentSpeakerId;
   int index;
-  int curAudioDuration; 
-  int curAudioId;
+  float curAudioDuration; 
+  String curAudioId;
   String curAudioText = "";
   String currentSpeakerName = "";
   boolean isPlaying = false;
@@ -21,9 +21,9 @@ public class Voice {
     lastTimeCheck = millis();
     isPlaying = true;
     // get audio data
-    curAudioDuration = audio.getInt("duration") * 1000 + 500;
-    currentSpeakerId = audio.getLong("user_id");
-    curAudioId = audio.getInt("id");
+    curAudioDuration = audio.getFloat("duration") * 1000 + 500;
+    currentSpeakerId = audio.getString("user_id");
+    curAudioId = audio.getString("id");
     currentSpeakerName = audio.getString("name");
     curAudioText = audio.getString("text");
     // send osc play data 
@@ -38,8 +38,8 @@ public class Voice {
   void reset () {
     curAudioDuration = 0;
     isPlaying = false;
-    curAudioId = 0;
-    currentSpeakerId = 0;
+    curAudioId = "";
+    currentSpeakerId = "";
     currentSpeakerName = "";
     curAudioText = "";
   }
@@ -82,7 +82,7 @@ public class Voice {
     return isPlaying;
   }
 
-  long getSpeakerId () {
+  String getSpeakerId () {
     return currentSpeakerId;
   }
 }

@@ -1,16 +1,16 @@
 // Noise Walker
-class NoiseCircluarWalker {
+class NoiseCircularWalker {
   float aoff;
   float roff;
   float aVel = .001;
   float rVel = .001;
-  long id; 
+  String id; 
   String name; 
   int index; 
   int voiceIndex; 
   PVector pos;
   boolean isPlaying = false;
-  NoiseCircluarWalker (long _id, String _name, int _index) {
+  NoiseCircularWalker (String _id, String _name, int _index) {
     aoff = random(10000);
     roff = random(10000);
     id = _id;
@@ -23,19 +23,31 @@ class NoiseCircluarWalker {
     aoff = aoff + aVel;
     roff = roff + rVel;
     float theta = noise(aoff) * 4 * PI;
-    float radius = min(map(noise(roff), 0, 0.8, minRadius, maxRadius), maxRadius);
-    int posX = radius * cos( theta );
-    int posY = radius * sin( theta );
+    float radius = min(map(noise(roff), 0, 1, minRadius, maxRadius), maxRadius);
+    float posX = radius * cos( theta );
+    float posY = radius * sin( theta );
     pos = new PVector(posX, posY);
     // only send position if speaker is playing
     isPlaying = false;
-    for (long _id : orchestration.getCurrentSpeakerId()) {
-      if (_id == id) {
-        osc_controller.sendAudioOSC(theta, radius);
+    for (String _id : orchestration.getCurrentSpeakerId()) {
+      if (_id.equals(id)) {
+        osc_controller.sendAudioOSC(voiceIndex, theta, radius);
         isPlaying = true;
       }
     }
-    osc_controller.sendVisualOSC(theta, radius);
+    osc_controller.sendVisualOSC(index, theta, radius);
+  }
+
+  void draw (PGraphics pg) {
+    if (isPlaying) {
+      pg.fill(255);
+    } else {
+      pg.noFill();
+    }
+    float x = pos.x * debug_scale;
+    float y = pos.y * debug_scale;
+    pg.ellipse(x, y, 5, 5);
+    pg.text(index, x + 5, y);
   }
 
   PVector getPosition () {
@@ -54,7 +66,7 @@ class NoiseCircluarWalker {
     voiceIndex = _voiceIndex;
   }
   
-  long getSpeakerId() {
+  String getSpeakerId() {
     return id;
   }
 }

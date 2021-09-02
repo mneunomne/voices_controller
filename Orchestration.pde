@@ -33,10 +33,10 @@ public class Orchestration {
     ArrayList<JSONObject> filtered = new ArrayList<JSONObject>();
     for (int i = 0; i < audios.size(); i++) {
       JSONObject obj = audios.getJSONObject(i);
-      long cur_id = obj.getLong("user_id");
+      String cur_id = obj.getString("user_id");
       boolean hasFound = false;       
-      for (long id : getCurrentSpeakerId()) {
-         if (cur_id == id) {
+      for (String id : getCurrentSpeakerId()) {
+         if (cur_id.equals(id)) {
             hasFound = true;
          }
       }
@@ -48,8 +48,8 @@ public class Orchestration {
     return filtered.get(index);
   }
   
-  long [] getCurrentSpeakerId () {
-    long [] ids = new long[numActiveVoices];
+  String [] getCurrentSpeakerId () {
+    String [] ids = new String[numActiveVoices];
     for(int i = 0; i < numActiveVoices; i++) {
        ids[i] = voices[i].getSpeakerId();
     }

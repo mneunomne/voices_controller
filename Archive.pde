@@ -24,7 +24,7 @@ class Archive {
       JSONObject item = users.getJSONObject(i); 
       String name = item.getString("name");
       String id = item.getString("id");
-      NoiseCircluarWalker n = new NoiseCircluarWalker(id, name, i);
+      NoiseCircularWalker n = new NoiseCircularWalker(id, name, i);
       walkers.add(n);
     }
     println("[Archive] Loaded database with " + audios.size() + " audios");
@@ -37,22 +37,33 @@ class Archive {
     println("[Archive] New audio data appended, with now " + audios.size() + " audios");
 
     // check if user from new audio already exists in local array
-    String new_user_id = new_audio_data.getString("id");
+    String new_user_id = new_audio_data.getString("user_id");
     boolean hasFound = false;
     for (int i = 0; i < users.size(); i++) {
       String user_id = users.getJSONObject(i).getString("id");
-      hasFound = hasFound || user_id == new_user_id;
+      hasFound = hasFound || user_id.equals(new_user_id);
+      println(hasFound, new_user_id, user_id);
     }
 
     // if it is a new user...
     if (!hasFound) {
       // create new user data object based on new audio data
       JSONObject new_user = new JSONObject();
-      new_user.put("id", new_audio_data.getString("id"));
+      new_user.put("id", new_audio_data.getString("user_id"));
       new_user.put("name", new_audio_data.getString("name"));
-      users.append(new_user);
-      println("[Archive] New user data appended, with now " + users.size() + " users");
+      appendUser(new_user);
     }
+  }
+
+  void appendUser (JSONObject new_user) {
+    // append new user
+    users.append(new_user);
+    // create new walker
+    String name = new_user.getString("name");
+    String id = new_user.getString("id");
+    NoiseCircularWalker new_walker = new NoiseCircularWalker(id, name, walkers.size());
+    walkers.add(new_walker);
+    println("[Archive] New user data appended, with now " + users.size() + " users");
   }
 
   JSONArray getAudios () {
