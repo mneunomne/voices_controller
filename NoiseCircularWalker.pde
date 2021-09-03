@@ -31,11 +31,11 @@ class NoiseCircularWalker {
     isPlaying = false;
     for (String _id : orchestration.getCurrentSpeakerId()) {
       if (_id.equals(id)) {
-        osc_controller.sendAudioOSC(voiceIndex, theta, radius);
+        oscController.sendAudioOSC(voiceIndex, theta, radius);
         isPlaying = true;
       }
     }
-    osc_controller.sendVisualOSC(index, theta, radius);
+    oscController.sendVisualOSC(index, theta, radius);
   }
 
   void draw (PGraphics pg) {

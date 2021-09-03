@@ -17,7 +17,7 @@ class OscController {
   void connect () {
     oscP5 = new OscP5(this,12000);
     localBroadcast = new NetAddress("127.0.0.1",32000);
-    remoteBroadcast = new NetAddress("10.10.48.88",7400);
+    remoteBroadcast = new NetAddress("10.10.48.111",7400);
   }
 
   void sendOscplay (String speakerId, String audioID, String audioText, int index) {

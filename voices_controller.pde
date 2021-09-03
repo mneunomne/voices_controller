@@ -10,7 +10,7 @@ Gui gui;
 
 Archive archive;
 
-OscController osc_controller;
+OscController oscController;
 
 Orchestration orchestration;
 
@@ -20,7 +20,7 @@ PGraphics pg;
 
 int maxNumVoices = 8;
 int numActiveVoices = 1;
-int initialInterval = 3000;
+int initialInterval = 5000;
 
 // value in meters
 float projectionRadius = 3;
@@ -53,8 +53,8 @@ void setup () {
   gui.init();
 
   // start osc controller
-  osc_controller = new OscController();
-  osc_controller.connect();
+  oscController = new OscController();
+  oscController.connect();
 
   archive = new Archive();
   thread("loadDatabase");

@@ -41,6 +41,16 @@ class Archive {
 
   void addNewAudio (JSONObject new_audio_data) {
     audios.append(new_audio_data);
+
+
+    delay(1000);
+    // play new audio;
+    String user_id = new_audio_data.getString("user_id");
+    String audio_id = new_audio_data.getString("id");
+    String text = new_audio_data.getString("text");
+    int index = 0;
+    oscController.sendOscplay(user_id, audio_id, text, index);
+
     println("[Archive] New audio data appended, with now " + audios.size() + " audios");
     // create points json file for new audio...
     /*

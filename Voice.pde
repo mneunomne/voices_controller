@@ -27,11 +27,11 @@ public class Voice {
     currentSpeakerName = audio.getString("name");
     curAudioText = audio.getString("text");
     // send osc play data 
-    osc_controller.sendOscplay(currentSpeakerId, curAudioId, curAudioText, index);
+    oscController.sendOscplay(currentSpeakerId, curAudioId, curAudioText, index);
   }
 
   void end () {
-    osc_controller.sendOscEnd(currentSpeakerId, curAudioId);
+    oscController.sendOscEnd(currentSpeakerId, curAudioId);
     reset();
   }
 
