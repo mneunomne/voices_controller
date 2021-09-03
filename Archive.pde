@@ -34,7 +34,7 @@ class Archive {
       NoiseCircularWalker n = new NoiseCircularWalker(id, name, i);
       walkers.add(n);
     }
-    println("[Archive] Loaded database with " + audios.size() + " audios");
+    
     // loaded!
     onArchiveLoaded();
   }
@@ -48,10 +48,10 @@ class Archive {
     words.add(word);
     word.load();
     */
-    checkForNewUser(new_audio_data);    
+    addNewUser(new_audio_data);
   }
 
-  void checkForNewUser (new_audio_data) {
+  void addNewUser (JSONObject new_audio_data) {
     // check if user from new audio already exists in local array
     String new_user_id = new_audio_data.getString("user_id");
     boolean hasFound = false;
