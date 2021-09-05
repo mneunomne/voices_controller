@@ -9,7 +9,7 @@ public class Voice {
   int interval;
   int lastTimeCheck = 0;
   boolean isActive = false;
-
+  float reverb = 0;
   Voice (int _index, boolean _isActive, int _interval) {
     interval = _interval;
     index = _index;
@@ -60,6 +60,10 @@ public class Voice {
     interval = val;
   }
 
+  void setReverb (float val) {
+    reverb = val;
+  }
+
 
   void update () {
     if (isActive) {
@@ -70,6 +74,11 @@ public class Voice {
           play(audio);
         }
       } else {
+
+        // send effect values
+        oscController.sendReverb(currentSpeakerId, reverb);
+
+
         // check if audio has finnished playing
         if (millis() > lastTimeCheck + curAudioDuration) {
           end();

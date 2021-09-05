@@ -72,5 +72,9 @@ public class Orchestration {
   void setVoiceInterval (int index, int value) {
     voices[index].setInterval(value);
   }
+
+  void setVoiceReverb (int index, float value) {
+    voices[index].setReverb(value);
+  }
   
 }

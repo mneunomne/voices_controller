@@ -88,7 +88,7 @@ public class Gui {
         .setPosition(fx_x,fx_y)
         .setSize(cp_width,cp_height)
         .setRange(0, 1)
-        .setValue(0.5)
+        .setValue(0)
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
@@ -120,11 +120,35 @@ public class Gui {
 
   void setup_general () {
     //int width = 306;
+    int group_width = width - (582 + 306);
+    int group_height = height - padding * 2;
     int px = 582 + 306 + padding;
     int py = padding;
+    int cp_width = group_width - padding * 2;
+    int cp_height = 20;
+
+    Group group = cp5.addGroup("general")
+      .setWidth(group_width)
+      .setPosition(px,py)
+      .setBackgroundHeight(group_height)
+      .setBackgroundColor(color(255,25))
+      .disableCollapse();
+
+    int fx_x = padding;
+    int fx_y = padding;
+    
+    cp5.addSlider("blur")
+      .setPosition(fx_x,fx_y)
+      .setSize(cp_width,cp_height)
+      .setRange(0, 1)
+      .setValue(0.5)
+      .setGroup(group)
+      ;
+    fx_y+= cp_height+padding;
     cp5.addBang("load_svgs")
-      .setPosition(px, py)
+      .setPosition(fx_x, fx_y)
       .setSize(40, 40)
+      .setGroup(group)
       ;
   }
 

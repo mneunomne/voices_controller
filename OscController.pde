@@ -20,12 +20,12 @@ class OscController {
     remoteBroadcast = new NetAddress("10.10.48.111",7400);
   }
 
-  void sendOscplay (String speakerId, String audioID, String audioText, int index) {
+  void sendOscplay (String speakerId, String audioId, String audioText, int index) {
     /* VISUAL */
     OscMessage visMessage = new OscMessage("/play");
     visMessage.add(speakerId);
-    visMessage.add(audioID + ".wav");
-    visMessage.add(audioText);
+    visMessage.add(audioId);
+    visMessage.add(index);
     oscP5.send(visMessage, localBroadcast);
 
     // set the index of MaxMSP "voice player" a way to save memory in MaxMSP
@@ -38,7 +38,7 @@ class OscController {
         
     /* Audio */
     OscMessage audioMessage = new OscMessage("/play");
-    audioMessage.add(audioID);
+    audioMessage.add(audioId);
     audioMessage.add(index);
     oscP5.send(audioMessage, remoteBroadcast);
 
@@ -46,10 +46,10 @@ class OscController {
   }
 
   void sendOscEnd (String speakerId, String audioId) {
-    OscMessage myOscMessage = new OscMessage("/end");
-    myOscMessage.add(speakerId);
-    myOscMessage.add(audioId);
-    oscP5.send(myOscMessage, localBroadcast);
+    OscMessage visMessage = new OscMessage("/end");
+    visMessage.add(speakerId);
+    visMessage.add(audioId);
+    oscP5.send(visMessage, localBroadcast);
   }
 
   void sendVisualOSC (int index, float theta, float radius) {
@@ -70,12 +70,27 @@ class OscController {
     oscP5.send(audioMessage, remoteBroadcast);
   }
 
+  void sendReverb (String speakerId, float value ) {
+    OscMessage visMessage = new OscMessage("/reverb");
+    visMessage.add(speakerId);
+    visMessage.add(value);
+    oscP5.send(visMessage, localBroadcast);
+    println("send reverb message!", value);
+  }
+
   void onNewAudio (OscMessage theOscMessage) {
     JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
     println("[OscController] new_audio_data", new_audio_data);
     // not use direct function to avoid threading
     newAudio = new_audio_data;
     hasNewAudio = true;
+  }
+
+  void sendBlur (float value) {
+    OscMessage visMessage = new OscMessage("/blur");
+    visMessage.add(value);
+    oscP5.send(visMessage, localBroadcast);
+    println("send blur message!", value);
   }
 
   void oscEvent(OscMessage theOscMessage) {

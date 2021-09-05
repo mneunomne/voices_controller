@@ -19,7 +19,7 @@ ArrayList<NoiseCircularWalker> walkers = new ArrayList<NoiseCircularWalker>();
 PGraphics pg;
 
 int maxNumVoices = 8;
-int numActiveVoices = 1;
+int numActiveVoices = 0;
 int initialInterval = 5000;
 
 // value in meters
@@ -93,6 +93,8 @@ void loadDatabase () {
 }
 
 void controlEvent(ControlEvent theControlEvent) {
+  if(!dbLoaded) return;
+
   if(theControlEvent.isFrom("radius")) {
     innerRadius = theControlEvent.getController().getArrayValue(0);
     outerRadius = theControlEvent.getController().getArrayValue(1);
@@ -102,10 +104,18 @@ void controlEvent(ControlEvent theControlEvent) {
     archive.loadSvgs();
   }
 
+  // Voices Controllers  
   for (int i = 0; i < maxNumVoices; i++) {
+    // toggle
     if(theControlEvent.isFrom("_" + i)) {
-      boolean value = theControlEvent.getValue()  == 1.0;
+      boolean value = theControlEvent.getValue() == 1.0;
       orchestration.setVoiceActive(i, value);
+    }
+    // reverb
+    if(theControlEvent.isFrom("reverb_" + i)) {
+      float value = theControlEvent.getValue();
+      orchestration.setVoiceReverb(i, value);
+      // oscController.sendReverb(i, value);
     }
   }
 }
@@ -120,4 +130,8 @@ void radial_vel(float vel) {
   for(int i = 0; i < walkers.size(); i++) {
     walkers.get(i).setRadiusVelocity(vel);
   }
+}
+
+void blur (float value) {
+  oscController.sendBlur(value);
 }
