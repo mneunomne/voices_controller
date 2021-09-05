@@ -35,8 +35,8 @@ public class Gui {
      .setPosition(px,py)
      .setSize(cp_width,cp_height)
      .setHandleSize(10)
-     .setRange(0,1)
-     .setRangeValues(0, 1)
+     .setRange(0,maxRadius)
+     .setRangeValues(innerRadius, outerRadius)
      .setGroup(group)
      ;
     py+= cp_height + padding; 
@@ -50,7 +50,7 @@ public class Gui {
       ;
     py+= cp_height + padding; 
     // radius velocity slider
-    cp5.addSlider("radius_vel")
+    cp5.addSlider("radial_vel")
       .setPosition(px,py)
       .setSize(cp_width,cp_height)
       .setValue(10)  
@@ -78,6 +78,12 @@ public class Gui {
       int padding_right = 35;
       int fx_y = padding;
       int fx_x = padding_right + padding;
+      // create a toggle
+      cp5.addToggle("_"+i)
+        .setPosition(fx_x-padding_right,fx_y)
+        .setSize(20,20)
+        .setGroup(group)
+        ;
       cp5.addSlider("reverb_" + i)
         .setPosition(fx_x,fx_y)
         .setSize(cp_width,cp_height)
@@ -113,7 +119,13 @@ public class Gui {
   }
 
   void setup_general () {
-    int width = 306;
+    //int width = 306;
+    int px = 582 + 306 + padding;
+    int py = padding;
+    cp5.addBang("load_svgs")
+      .setPosition(px, py)
+      .setSize(40, 40)
+      ;
   }
 
   void draw () {
@@ -126,8 +138,8 @@ public class Gui {
       pg.translate(pg.width/2, pg.height/2);
       // min/max radius
       pg.stroke(255, 0, 0);
-      pg.ellipse(0, 0, maxRadius * debugScale, maxRadius * debugScale);
-      pg.ellipse(0, 0, minRadius * debugScale, minRadius * debugScale);
+      pg.ellipse(0, 0, outerRadius * debugScale, outerRadius * debugScale);
+      pg.ellipse(0, 0, innerRadius * debugScale, innerRadius * debugScale);
       // projection radius
       pg.stroke(0, 0, 255);
       pg.ellipse(0, 0, projectionRadius * debugScale, projectionRadius * debugScale);
@@ -140,5 +152,4 @@ public class Gui {
     pg.endDraw();
     image(pg, padding, padding); 
   }
-
 }

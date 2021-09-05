@@ -24,7 +24,7 @@ class OscController {
     /* VISUAL */
     OscMessage visMessage = new OscMessage("/play");
     visMessage.add(speakerId);
-    visMessage.add(audioID);
+    visMessage.add(audioID + ".wav");
     visMessage.add(audioText);
     oscP5.send(visMessage, localBroadcast);
 

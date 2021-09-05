@@ -18,6 +18,7 @@ public class Voice {
   }
 
   void play (JSONObject audio) {
+    println("play!");
     lastTimeCheck = millis();
     isPlaying = true;
     // get audio data

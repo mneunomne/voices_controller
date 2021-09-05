@@ -21,6 +21,17 @@ public class Orchestration {
       }
     }
   }
+
+  void setVoiceActive (int index, boolean value) {
+    voices[index].setActive(value);
+    int amount = 0;
+    for(int i = 0; i < maxNumVoices; i++) {
+      if (voices[i].isActive) {
+        amount++;
+      }
+    }
+    numActiveVoices = amount;
+  }
   
   void update () {
     for(int i = 0; i < maxNumVoices; i++) {
@@ -48,10 +59,12 @@ public class Orchestration {
     return filtered.get(index);
   }
   
-  String [] getCurrentSpeakerId () {
-    String [] ids = new String[numActiveVoices];
+  ArrayList<String> getCurrentSpeakerId () {
+    ArrayList<String> ids = new ArrayList<String>();
     for(int i = 0; i < numActiveVoices; i++) {
-       ids[i] = voices[i].getSpeakerId();
+      if (voices[i].isPlaying) {
+        ids.add(voices[i].getSpeakerId());
+      }
     }
     return ids;
   }

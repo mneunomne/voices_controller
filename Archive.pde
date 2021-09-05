@@ -41,8 +41,9 @@ class Archive {
 
   void addNewAudio (JSONObject new_audio_data) {
     audios.append(new_audio_data);
-
-
+    
+    /*
+    TEST
     delay(1000);
     // play new audio;
     String user_id = new_audio_data.getString("user_id");
@@ -52,6 +53,8 @@ class Archive {
     oscController.sendOscplay(user_id, audio_id, text, index);
 
     println("[Archive] New audio data appended, with now " + audios.size() + " audios");
+    */
+    
     // create points json file for new audio...
     /*
     Word word = new Word(new_audio_data);
@@ -81,7 +84,7 @@ class Archive {
     }
   }
 
-  void firstLoad () {
+  void loadSvgs () {
     for (Word word : words) {
       word.load();
     }

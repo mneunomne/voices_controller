@@ -24,8 +24,9 @@ int initialInterval = 5000;
 
 // value in meters
 float projectionRadius = 3;
-float minRadius = 1;
-float maxRadius = 3.5;
+float innerRadius = 1;
+float outerRadius = 3.5;
+float maxRadius = 5;
 float debugRadius = 4;
 
 int debugWidth = 583 - 20; 
@@ -61,6 +62,7 @@ void setup () {
 }
 
 void onArchiveLoaded () {
+  println("Archive Loaded!");
   orchestration = new Orchestration(archive.getAudios());
   dbLoaded = true;
 }
@@ -74,12 +76,6 @@ void draw () {
 
 void update() {
   if (dbLoaded) {
-    // only runs once after db is loaded. avoiding multithreading
-    if (!firstLoaded) {
-      archive.firstLoad();
-      firstLoaded = true;
-    }
-
     if (hasNewAudio) {
       archive.addNewAudio(newAudio);
       hasNewAudio = false;
@@ -94,4 +90,34 @@ void update() {
 
 void loadDatabase () {
   archive.load();
+}
+
+void controlEvent(ControlEvent theControlEvent) {
+  if(theControlEvent.isFrom("radius")) {
+    innerRadius = theControlEvent.getController().getArrayValue(0);
+    outerRadius = theControlEvent.getController().getArrayValue(1);
+  }
+
+  if(theControlEvent.isFrom("load_svgs")) { 
+    archive.loadSvgs();
+  }
+
+  for (int i = 0; i < maxNumVoices; i++) {
+    if(theControlEvent.isFrom("_" + i)) {
+      boolean value = theControlEvent.getValue()  == 1.0;
+      orchestration.setVoiceActive(i, value);
+    }
+  }
+}
+
+void angle_vel(float vel) {
+  for(int i = 0; i < walkers.size(); i++) {
+    walkers.get(i).setAngleVelocity(vel);
+  }
+}
+
+void radial_vel(float vel) {
+  for(int i = 0; i < walkers.size(); i++) {
+    walkers.get(i).setRadiusVelocity(vel);
+  }
 }
