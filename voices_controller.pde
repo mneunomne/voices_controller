@@ -39,10 +39,15 @@ boolean firstLoaded = false;
 JSONObject newAudio;
 boolean hasNewAudio = false;
 
+int waveform_h = 300;
+WaveForm waveform;
+
 void setup () {
-  size(1194, 834, P2D);
+  size(1440, 900, P2D);
 
   cp5 = new ControlP5(this);
+  cp5.setColorForeground(color(255));
+  cp5.setColorBackground(color(80));
 
   // setup debug canvas
   pg = createGraphics(debugWidth, debugWidth, P2D);
@@ -52,6 +57,9 @@ void setup () {
   // Graphical user interface
   gui = new Gui();
   gui.init();
+
+  waveform = new WaveForm(waveform_h);
+  waveform.loadJson();
 
   // start osc controller
   oscController = new OscController();
@@ -121,17 +129,20 @@ void controlEvent(ControlEvent theControlEvent) {
 }
 
 void angle_vel(float vel) {
+  if (!dbLoaded) return;
   for(int i = 0; i < walkers.size(); i++) {
     walkers.get(i).setAngleVelocity(vel);
   }
 }
 
 void radial_vel(float vel) {
+  if (!dbLoaded) return;
   for(int i = 0; i < walkers.size(); i++) {
     walkers.get(i).setRadiusVelocity(vel);
   }
 }
 
 void blur (float value) {
+  if (!dbLoaded) return;
   oscController.sendBlur(value);
 }

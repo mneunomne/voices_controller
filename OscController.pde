@@ -4,8 +4,8 @@ class OscController {
   NetAddress remoteBroadcast; 
   NetAddress localBroadcast;
 
-  String maxAddress = "10.10.48.88";
-  int maxPort = 74000;
+  String maxAddress = "10.10.48.19";
+  int maxPort = 7400;
 
   String visualAddress = "127.0.0.1";
   int visualPort = 32000;
@@ -16,8 +16,8 @@ class OscController {
 
   void connect () {
     oscP5 = new OscP5(this,12000);
-    localBroadcast = new NetAddress("127.0.0.1",32000);
-    remoteBroadcast = new NetAddress("10.10.48.111",7400);
+    localBroadcast = new NetAddress(visualAddress,visualPort);
+    remoteBroadcast = new NetAddress(maxAddress,maxPort);
   }
 
   void sendOscplay (String speakerId, String audioId, String audioText, int index) {
@@ -75,7 +75,6 @@ class OscController {
     visMessage.add(speakerId);
     visMessage.add(value);
     oscP5.send(visMessage, localBroadcast);
-    println("send reverb message!", value);
   }
 
   void onNewAudio (OscMessage theOscMessage) {
@@ -101,6 +100,22 @@ class OscController {
 
     if (theOscMessage.checkAddrPattern("/new_audio")) {
       onNewAudio(theOscMessage);
+    }
+
+    if (theOscMessage.checkAddrPattern("/waveform1")) {
+      waveform.loadDataChunk(0, theOscMessage);
+    }
+
+    if (theOscMessage.checkAddrPattern("/waveform2")) {
+      waveform.loadDataChunk(1, theOscMessage);
+    }
+
+    if (theOscMessage.checkAddrPattern("/waveform3")) {
+      waveform.loadDataChunk(2, theOscMessage);
+    }
+
+    if (theOscMessage.checkAddrPattern("/waveform4")) {
+      waveform.loadDataChunk(3, theOscMessage);
     }
   }
 }

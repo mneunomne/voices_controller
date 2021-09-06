@@ -26,7 +26,6 @@ public class Gui {
       .setWidth(group_width)
       .setPosition(px,py)
       .setBackgroundHeight(group_height)
-      .setBackgroundColor(color(255,25))
       .disableCollapse()
       ;
     px = padding;
@@ -72,7 +71,6 @@ public class Gui {
         .setWidth(group_width)
         .setPosition(px,py)
         .setBackgroundHeight(group_height)
-        .setBackgroundColor(color(255,25))
         .disableCollapse()
         ;
       int padding_right = 35;
@@ -123,7 +121,7 @@ public class Gui {
     int group_width = width - (582 + 306);
     int group_height = height - padding * 2;
     int px = 582 + 306 + padding;
-    int py = padding;
+    int py = padding + label_padding_top;
     int cp_width = group_width - padding * 2;
     int cp_height = 20;
 
@@ -131,7 +129,6 @@ public class Gui {
       .setWidth(group_width)
       .setPosition(px,py)
       .setBackgroundHeight(group_height)
-      .setBackgroundColor(color(255,25))
       .disableCollapse();
 
     int fx_x = padding;
@@ -140,8 +137,8 @@ public class Gui {
     cp5.addSlider("blur")
       .setPosition(fx_x,fx_y)
       .setSize(cp_width,cp_height)
-      .setRange(0, 1)
-      .setValue(0.5)
+      .setRange(0, 255)
+      .setValue(60)
       .setGroup(group)
       ;
     fx_y+= cp_height+padding;
@@ -154,7 +151,7 @@ public class Gui {
 
   void draw () {
     pg.beginDraw();
-    pg.background(25);
+    pg.background(0);
     pg.ellipseMode(RADIUS);
     pg.noFill();
     if (dbLoaded) {
@@ -174,6 +171,14 @@ public class Gui {
       }
     }
     pg.endDraw();
-    image(pg, padding, padding); 
+    image(pg, padding, padding);
+
+    int waveform_w = pg.width;
+    int px = 582 + 306 + padding;
+    int py = height - waveform_h - padding*2; 
+    pushMatrix();
+      translate(px, py + padding + waveform_h/2);
+      waveform.draw();
+    popMatrix();
   }
 }
