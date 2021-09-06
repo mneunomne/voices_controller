@@ -64,8 +64,10 @@ class OscController {
   void sendAudioOSC (int index, float theta, float radius) {
     OscMessage audioMessage = new OscMessage("/pos");
     audioMessage.add(index);
-    audioMessage.add((theta / (PI * 2) * 360 - 90) % 360 );
-    float audioRadius = map(radius / (height/2), 0.2, 1, 0, 1);
+    float audioAngle = (theta / (PI * 2) * 360 - 90) % 360 ;
+    audioMessage.add(audioAngle);
+    float audioRadius = radius / projectionRadius;
+    println("audioRadius", index, audioAngle, audioRadius);
     audioMessage.add(audioRadius);
     oscP5.send(audioMessage, remoteBroadcast);
   }
