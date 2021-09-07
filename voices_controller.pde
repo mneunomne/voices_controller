@@ -42,12 +42,17 @@ boolean hasNewAudio = false;
 int waveform_h = 300;
 WaveForm waveform;
 
+PFont font;
+
 void setup () {
   size(1440, 900, P2D);
 
   cp5 = new ControlP5(this);
   cp5.setColorForeground(color(255));
   cp5.setColorBackground(color(80));
+
+  //font 
+  font = createFont("Arial Unicode MS", 12);
 
   // setup debug canvas
   pg = createGraphics(debugWidth, debugWidth, P2D);

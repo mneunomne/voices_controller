@@ -90,30 +90,24 @@ public class Gui {
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
-      cp5.addSlider("filter_" + i)
+      
+    
+      cp5.addTextlabel("speaker_" + i)
+        .setText("speaker: null")
         .setPosition(fx_x,fx_y)
-        .setSize(cp_width,cp_height)
-        .setRange(0, 1)
-        .setValue(0.5)
+        .setColorValue(0xffffffff)
+        .setFont(font)
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
-      cp5.addSlider("echo_" + i)
+      cp5.addTextlabel("text_" + i)
+        .setText("text: null")
         .setPosition(fx_x,fx_y)
-        .setSize(cp_width,cp_height)
-        .setRange(0, 1)
-        .setValue(0.5)
+        .setColorValue(0xffffffff)
+        .setFont(font)
         .setGroup(group)
         ;
-      fx_y+=cp_height+padding;
-      cp5.addSlider("bit_" + i)
-        .setPosition(fx_x,fx_y)
-        .setSize(cp_width,cp_height)
-        .setRange(0, 1)
-        .setValue(0.5)
-        .setGroup(group)
-        ;
-    }
+  }
   }
 
   void setup_general () {

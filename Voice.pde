@@ -18,7 +18,7 @@ public class Voice {
   }
 
   void play (JSONObject audio) {
-    println("play!");
+    println("play!", audio);
     lastTimeCheck = millis();
     isPlaying = true;
     // get audio data
@@ -29,10 +29,22 @@ public class Voice {
     curAudioText = audio.getString("text");
     // send osc play data 
     oscController.sendOscplay(currentSpeakerId, curAudioId, curAudioText, index);
+    
+    // update gui
+    String speaker;
+    if (currentSpeakerName.equals("")) {
+      speaker = currentSpeakerId;
+    } else {
+      speaker = currentSpeakerName;
+    }
+    cp5.getController("speaker_" + index).setValueLabel("speaker: " + speaker);
+    cp5.getController("text_" + index).setValueLabel("text: " + curAudioText);
   }
 
   void end () {
     oscController.sendOscEnd(currentSpeakerId, curAudioId);
+    cp5.getController("speaker_" + index).setValueLabel("speaker: ");
+    cp5.getController("text_" + index).setValueLabel("text: ");
     reset();
   }
 
