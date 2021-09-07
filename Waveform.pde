@@ -1,10 +1,18 @@
 class WaveForm {
   ArrayList<Float> data = new ArrayList<Float>();
   JSONArray values;
-  int h = 300;
+  float [] bars = new float [maxNumVoices];
+  int h = 50;
+  int framecount = 0;
+  int curtime = 0;
+  float curValue = 0; 
+  int curRange = 0; 
+  // PGraphics wavecanvas;
   WaveForm (int _h) {
-    // 
     h = _h;
+    for (int i = 0; i < maxNumVoices; i++) {
+      bars[i] = (1.0/maxNumVoices) * i;
+    }
   }
 
   void loadDataChunk(int index, OscMessage theOscMessage) {
@@ -39,14 +47,48 @@ class WaveForm {
     }
   }
 
+  void update () {
+    curtime = (framecount/fr) % (data.size()-1);
+    framecount+=10;
+    float value = data.get(curtime);
+    myChart.push("incoming", value); 
+    int curbar = 0;
+    for (int i = 0; i < bars.length; i++) {
+      if (abs(value) >= bars[i]) {
+        curbar = i;
+      }
+    }
+    orchestration.setActiveVoices(curbar+1);
+    // update gui
+    for (int i = 0; i < maxNumVoices; i++) {
+      if (curbar >= i) {
+        cp5.getController("_" + i).setValue(1.0);
+      } else {
+        cp5.getController("_" + i).setValue(0.0);
+      }
+    }
+    // rintln("curbar", curbar);
+    // curValue = data.get()
+  }
+
   void draw () {
-    stroke(255);
     noFill();
     int x = 0;
-    for (float d : data) {
-      line(x, 0, x, d * h/2);
-      x++;
-    }
+    stroke(255);
     rect(0, -h/2, x, h);
+    for (int i = 0; i < data.size(); i++) {
+      float d = data.get(i);
+      line(x, 0, x, d * h/2);
+      if (i % 2 == 0) x++;
+    }
+
+    stroke(0, 255, 0);
+    line(curtime/2, h/2, curtime/2, -h/2);
+
+    stroke(255,0,0);
+    for (int i = 0; i < bars.length; i++) {
+      line(0, bars[i] * h/2, x, bars[i] * h/2);
+      line(0, bars[i] * -h/2, x, bars[i] * -h/2);
+    }
   } 
 }

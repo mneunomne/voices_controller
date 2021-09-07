@@ -4,8 +4,8 @@ class OscController {
   NetAddress remoteBroadcast; 
   NetAddress localBroadcast;
 
-  String maxAddress = "10.10.48.19";
-  int maxPort = 7400;
+  String maxAddress = "10.10.48.85";
+  int maxPort = 12000;
 
   String visualAddress = "127.0.0.1";
   int visualPort = 32000;
@@ -80,7 +80,7 @@ class OscController {
 
   void onNewAudio (OscMessage theOscMessage) {
     JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
-    println("[OscController] new_audio_data", new_audio_data);
+    // println("[OscController] new_audio_data", new_audio_data);
     // not use direct function to avoid threading
     newAudio = new_audio_data;
     hasNewAudio = true;
@@ -95,12 +95,16 @@ class OscController {
 
   void oscEvent(OscMessage theOscMessage) {
     /* print the address pattern and the typetag of the received OscMessage */
-    print("[OscController]  ### received an osc message.");
-    print("[OscController]  addrpattern: "+theOscMessage.addrPattern());
-    println(" typetag: "+theOscMessage.typetag());
+    // print("[OscController]  ### received an osc message.");
+    // print("[OscController]  addrpattern: "+theOscMessage.addrPattern());
+    // println(" typetag: "+theOscMessage.typetag());
 
     if (theOscMessage.checkAddrPattern("/new_audio")) {
       onNewAudio(theOscMessage);
+    }
+
+    if (theOscMessage.checkAddrPattern("/update_audio")) {
+      loadDatabase();
     }
 
     if (theOscMessage.checkAddrPattern("/waveform1")) {

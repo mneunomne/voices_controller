@@ -39,13 +39,17 @@ boolean firstLoaded = false;
 JSONObject newAudio;
 boolean hasNewAudio = false;
 
-int waveform_h = 300;
+int waveform_h = 100;
 WaveForm waveform;
+
+int fr = 30;
 
 PFont font;
 
+Chart myChart;
+
 void setup () {
-  size(1440, 900, P2D);
+  size(1280, 1024, P2D);
 
   cp5 = new ControlP5(this);
   cp5.setColorForeground(color(255));
@@ -72,11 +76,21 @@ void setup () {
 
   archive = new Archive();
   thread("loadDatabase");
+
+  frameRate(30);
 }
 
 void onArchiveLoaded () {
-  println("Archive Loaded!");
-  orchestration = new Orchestration(archive.getAudios());
+  // if its first time loading, create orchestration 
+  if (!firstLoaded) {
+    println("Archive first time Loaded!");
+    orchestration = new Orchestration(archive.getAudios());
+    firstLoaded = true;
+  } else {
+    // if not, just update orchestration data
+    println("Archive update");
+    orchestration.reloadDatabase(archive.getAudios());
+  }
   dbLoaded = true;
 }
 
@@ -94,6 +108,7 @@ void update() {
       hasNewAudio = false;
     }
 
+    waveform.update();
     orchestration.update();
     for (NoiseCircularWalker walker : walkers) {
       walker.update();
@@ -115,6 +130,10 @@ void controlEvent(ControlEvent theControlEvent) {
 
   if(theControlEvent.isFrom("load_svgs")) { 
     archive.loadSvgs();
+  }
+
+  if(theControlEvent.isFrom("load_db")) { 
+    thread("loadDatabase");
   }
 
   // Voices Controllers  

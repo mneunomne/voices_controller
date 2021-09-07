@@ -3,6 +3,7 @@ public class Gui {
   int padding = 10;
   int label_padding_top = 10;
   int label_padding_right = 80;
+
   Gui () {
     // 
   }
@@ -85,7 +86,7 @@ public class Gui {
       cp5.addSlider("reverb_" + i)
         .setPosition(fx_x,fx_y)
         .setSize(cp_width,cp_height)
-        .setRange(0, 1)
+        .setRange(-1, 1)
         .setValue(0)
         .setGroup(group)
         ;
@@ -135,12 +136,37 @@ public class Gui {
       .setValue(60)
       .setGroup(group)
       ;
+
     fx_y+= cp_height+padding;
+    cp_height = 20;
+    cp_width = 20;
+    padding = 20;
     cp5.addBang("load_svgs")
       .setPosition(fx_x, fx_y)
-      .setSize(40, 40)
+      .setSize(cp_height, cp_height)
       .setGroup(group)
       ;
+    fx_y+= cp_height+padding;
+    cp5.addBang("load_db")
+      .setPosition(fx_x, fx_y)
+      .setSize(cp_height, cp_height)
+      .setGroup(group)
+      ;
+    fx_y+= cp_height+padding;
+
+    cp_width = group_width - padding * 2;
+    fx_y = height - (waveform_h * 2) - padding*2 - 20; 
+    myChart = cp5.addChart("dataflow")
+      .setPosition(0, fx_y)
+      .setSize(cp_width, waveform_h)
+      .setRange(0, 1)
+      .setView(Chart.LINE) // use Chart.LINE, Chart.PIE, Chart.AREA, Chart.BAR_CENTERED
+      .setStrokeWeight(1.5)
+      .setColorCaptionLabel(color(40))
+      .setGroup(group)
+      ;
+    myChart.addDataSet("incoming");
+    myChart.setData("incoming", new float[100]);
   }
 
   void draw () {

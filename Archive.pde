@@ -19,21 +19,24 @@ class Archive {
     audios = json.getJSONArray("audios");
     users = json.getJSONArray("users");
 
-    // create .json points for each word in database
-    for (int i = 0; i < audios.size(); i++) {    
-      JSONObject audio = audios.getJSONObject(i);
-      Word word = new Word(audio);
-      words.add(word);
-    }
+    // only create words and walkers in first load
+    if (!firstLoaded) {
+      // create .json points for each word in database
+      for (int i = 0; i < audios.size(); i++) {    
+        JSONObject audio = audios.getJSONObject(i);
+        Word word = new Word(audio);
+        words.add(word);
+      }
     
-    // create the moving points for each user
-    for (int i = 0; i < users.size(); i++) {    
-      JSONObject user = users.getJSONObject(i); 
-      String name = user.getString("name");
-      String id = user.getString("id");
-      NoiseCircularWalker n = new NoiseCircularWalker(id, name, i);
-      walkers.add(n);
-    }
+      // create the moving points for each user
+      for (int i = 0; i < users.size(); i++) {    
+        JSONObject user = users.getJSONObject(i); 
+        String name = user.getString("name");
+        String id = user.getString("id");
+        NoiseCircularWalker n = new NoiseCircularWalker(id, name, i);
+        walkers.add(n);
+      }
+      }
     
     // loaded!
     onArchiveLoaded();
@@ -56,11 +59,10 @@ class Archive {
     */
     
     // create points json file for new audio...
-    /*
     Word word = new Word(new_audio_data);
     words.add(word);
     word.load();
-    */
+    // add new user if it doesnt exists yet
     addNewUser(new_audio_data);
   }
 
