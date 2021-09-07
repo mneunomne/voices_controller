@@ -52,7 +52,6 @@ public class Orchestration {
       // if audio is disabled, dont add to filtered list
       if (obj.isNull("disabled") == false) {
         boolean is_disabled = obj.getBoolean("disabled"); 
-        println("is_disabled", is_disabled);
         if (is_disabled) hasFound = true;
       }
       String cur_id = obj.getString("user_id");

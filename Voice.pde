@@ -61,7 +61,7 @@ public class Voice {
     isActive = val;
     if (val == false) {
       if (isPlaying) {
-        end();
+        // end();
       } else {
         reset();
       }
