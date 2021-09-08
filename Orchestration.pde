@@ -54,7 +54,15 @@ public class Orchestration {
         boolean is_disabled = obj.getBoolean("disabled"); 
         if (is_disabled) hasFound = true;
       }
-      String cur_id = obj.getString("user_id");
+
+      String cur_id = obj.getString("user_id").toLowerCase();
+      String cur_name = obj.getString("name").toLowerCase();
+      String textFilter = voices[voiceIndex].textFilter;
+      // check text filter is set
+      if (!voices[voiceIndex].textFilter.equals("")){
+        hasFound = !(cur_name.contains(textFilter) || cur_id.contains(textFilter));
+      }
+
       // if its from same speaker...
       for (String id : getCurrentSpeakerId()) {
          if (cur_id.equals(id)) {
@@ -86,6 +94,11 @@ public class Orchestration {
 
   void setVoiceReverb (int index, float value) {
     voices[index].setReverb(value);
+  }
+
+  void setVoiceTextFilter (int index, String value) {
+    println("setVoiceTextFilter", value);
+    voices[index].setTextFilter(value);
   }
   
 }

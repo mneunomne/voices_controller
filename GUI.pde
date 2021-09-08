@@ -63,7 +63,7 @@ public class Gui {
     int w = 306;
     int px = 582 + padding;
     int group_width = w - (padding * 2);
-    int group_height = (height / 8) - padding * 2;
+    int group_height = 100;
     int cp_width = group_width - (padding * 2) - label_padding_right;
     int cp_height = 10;
     for (int i = 0; i < maxNumVoices; i++) {
@@ -91,7 +91,15 @@ public class Gui {
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
-      
+      cp5.addTextfield("filter_" + i)
+        .setPosition(fx_x,fx_y)
+        .setSize(cp_width - 20,20)
+        .setFont(font)
+        .setAutoClear(true)
+        .setCaptionLabel("")
+        .setGroup(group)
+        ;
+      fx_y+=20+padding;
     
       cp5.addTextlabel("speaker_" + i)
         .setText("speaker: null")
@@ -153,6 +161,13 @@ public class Gui {
       .setGroup(group)
       ;
     fx_y+= cp_height+padding;
+
+    cp5.addToggle("auto_mode")
+      .setPosition(fx_x,fx_y)
+      .setSize(20,20)
+      .setGroup(group)
+      .setValue(true)
+      ;
 
     cp_width = group_width - padding * 2;
     fx_y = height - (waveform_h * 2) - padding*2 - 20; 

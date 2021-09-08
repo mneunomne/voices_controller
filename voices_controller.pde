@@ -36,6 +36,8 @@ float debugScale = debugWidth / (debugRadius*2);
 boolean dbLoaded = false;
 boolean firstLoaded = false;
 
+boolean auto_mode = true;
+
 JSONObject newAudio;
 boolean hasNewAudio = false;
 
@@ -56,7 +58,7 @@ void setup () {
   cp5.setColorBackground(color(80));
 
   //font 
-  font = createFont("Arial Unicode MS", 12);
+  font = createFont("arial", 12);
 
   // setup debug canvas
   pg = createGraphics(debugWidth, debugWidth, P2D);
@@ -149,6 +151,13 @@ void controlEvent(ControlEvent theControlEvent) {
       orchestration.setVoiceReverb(i, value);
       // oscController.sendReverb(i, value);
     }
+    // text filter
+    if(theControlEvent.isFrom("filter_" + i)) {
+      String value = theControlEvent.getStringValue();
+      orchestration.setVoiceTextFilter(i, value);
+      println("get string value", i, value);
+      
+    }
   }
 }
 
@@ -169,4 +178,9 @@ void radial_vel(float vel) {
 void blur (float value) {
   if (!dbLoaded) return;
   oscController.sendBlur(value);
+}
+
+void auto_mode (float value) {
+  auto_mode = value == 1.0;
+  //println("value", value);
 }

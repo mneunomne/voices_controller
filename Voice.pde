@@ -10,6 +10,7 @@ public class Voice {
   int lastTimeCheck = 0;
   boolean isActive = false;
   float reverb = 0;
+  String textFilter = "";
   Voice (int _index, boolean _isActive, int _interval) {
     interval = _interval;
     index = _index;
@@ -74,6 +75,10 @@ public class Voice {
 
   void setReverb (float val) {
     reverb = val;
+  }
+
+  void setTextFilter (String val) {
+    textFilter = val;
   }
 
 

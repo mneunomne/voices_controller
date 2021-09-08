@@ -58,8 +58,9 @@ class WaveForm {
   }
 
   void update () {
+    if (!auto_mode) return;
     curtime = (framecount/fr) % (data2.size()-1);
-    framecount+=10;
+    framecount+=1;
     float value = data2.get(curtime);
     curValue = curValue + (value - curValue) * 0.1;
     myChart.push("incoming", curValue); 
