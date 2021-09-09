@@ -12,14 +12,14 @@ public class Voice {
   float reverb = 0;
   String textFilter = "";
   int additionalMillis = 1000;
-  Voice (int _index, boolean _isActive, int _interval) {
+  Voice(int _index, boolean _isActive, int _interval) {
     interval = _interval;
     index = _index;
     isActive = _isActive;
     
   }
-
-  void play (JSONObject audio) {
+  
+  void play(JSONObject audio) {
     println("play!", audio);
     lastTimeCheck = millis();
     isPlaying = true;
@@ -42,15 +42,15 @@ public class Voice {
     cp5.getController("speaker_" + index).setValueLabel("speaker: " + speaker);
     cp5.getController("text_" + index).setValueLabel("text: " + curAudioText);
   }
-
-  void end () {
+  
+  void end() {
     oscController.sendOscEnd(currentSpeakerId, curAudioId);
     cp5.getController("speaker_" + index).setValueLabel("speaker: ");
     cp5.getController("text_" + index).setValueLabel("text: ");
     reset();
   }
-
-  void reset () {
+  
+  void reset() {
     curAudioDuration = 0;
     isPlaying = false;
     curAudioId = "";
@@ -58,10 +58,10 @@ public class Voice {
     currentSpeakerName = "";
     curAudioText = "";
   }
-
+  
   void setActive(boolean val) {
     isActive = val;
-    if (val == false) {
+    if (isActive == false) {
       if (isPlaying) {
         // end();
       } else {
@@ -69,48 +69,48 @@ public class Voice {
       }
     }
   }
-
-  void setInterval (int val) {
+  
+  void setInterval(int val) {
     interval = val;
   }
-
-  void setReverb (float val) {
+  
+  void setReverb(float val) {
     reverb = val;
   }
-
-  void setTextFilter (String val) {
+  
+  void setTextFilter(String val) {
     textFilter = val;
   }
-
-
-  void update () {
+  
+  
+  void update() {
+    
+    if (isPlaying) {
+      // send effect values
+      oscController.sendReverb(currentSpeakerId, reverb);
+      // check if audio has finnished playing
+      if (millis() > lastTimeCheck + curAudioDuration) {
+        end();
+      }
+    }
+    
     if (isActive) {
       if (!isPlaying) {
-        if (millis() > lastTimeCheck + interval ) {
+        if (millis() > lastTimeCheck + interval) {
           // here pick on audio 
           JSONObject audio = orchestration.getNextAudio(index);
           play(audio);
         }
-      } else {
-
-        // send effect values
-        oscController.sendReverb(currentSpeakerId, reverb);
-
-
-        // check if audio has finnished playing
-        if (millis() > lastTimeCheck + curAudioDuration) {
-          end();
-        }
       }
     } 
   }
-
-
-  boolean getIsPlaying () {
+  
+  
+  boolean getIsPlaying() {
     return isPlaying;
   }
-
-  String getSpeakerId () {
+  
+  String getSpeakerId() {
     return currentSpeakerId;
   }
 }

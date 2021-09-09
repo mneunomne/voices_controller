@@ -80,6 +80,7 @@ class WaveForm {
   }
   
   void update() {
+    if (!auto_mode) return;
     // always calculate current value
     if (auto_mode && !idle) {
       curTime = (framecount / fr) % (curData2.size() - 1);
