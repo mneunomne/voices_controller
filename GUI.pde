@@ -229,6 +229,8 @@ public class Gui {
       for (NoiseCircularWalker walker : walkers) {
         walker.draw(pg);
       }
+    } else {
+      
     }
     pg.endDraw();
     image(pg, padding, padding);
