@@ -214,26 +214,30 @@ public class Gui {
     pg.background(0);
     pg.ellipseMode(RADIUS);
     pg.noFill();
+    // translate to center
+    pg.translate(pg.width/2, pg.height/2);
+    // min/max radius
+    pg.stroke(255, 0, 0);
+    pg.ellipse(0, 0, outerRadius * debugScale, outerRadius * debugScale);
+    pg.ellipse(0, 0, innerRadius * debugScale, innerRadius * debugScale);
+    // projection radius
+    pg.stroke(0, 0, 255);
+    pg.ellipse(0, 0, projectionRadius * debugScale, projectionRadius * debugScale);
+    // draw moving circles
     if (dbLoaded) {
-      // translate to center
-      pg.translate(pg.width/2, pg.height/2);
-      // min/max radius
-      pg.stroke(255, 0, 0);
-      pg.ellipse(0, 0, outerRadius * debugScale, outerRadius * debugScale);
-      pg.ellipse(0, 0, innerRadius * debugScale, innerRadius * debugScale);
-      // projection radius
-      pg.stroke(0, 0, 255);
-      pg.ellipse(0, 0, projectionRadius * debugScale, projectionRadius * debugScale);
-      // draw moving circles
       pg.stroke(255);
       for (NoiseCircularWalker walker : walkers) {
         walker.draw(pg);
       }
-    } else {
-      
     }
     pg.endDraw();
     image(pg, padding, padding);
+
+    // osc texts
+    int gui_audio_h = height-200 - padding * 2;
+    text("new audio:", padding, gui_audio_h-30);
+    text(lastAudio, padding, gui_audio_h-15,  pg.width, pg.width);
+  
 
     int waveform_w = pg.width;
     int px = 582 + 306 + padding;

@@ -29,7 +29,6 @@ class NoiseCircularWalker {
     pos = new PVector(posX, posY);
     // only send position if speaker is playing
     isPlaying = false;
-    // println(" orchestration.getCurrentSpeakerId()", orchestration.getCurrentSpeakerId());
     for (String _id : orchestration.getCurrentSpeakerId()) {
       if (_id.equals(id)) {
         oscController.sendAudioOSC(voiceIndex, theta, radius);

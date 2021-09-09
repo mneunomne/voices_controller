@@ -46,36 +46,62 @@ public class Orchestration {
   JSONObject getNextAudio (int voiceIndex) {
     // get audio not from same speaker
     ArrayList<JSONObject> filtered = new ArrayList<JSONObject>();
+    ArrayList<JSONObject> non_filtered = new ArrayList<JSONObject>();
     for (int i = 0; i < audios.size(); i++) {
       JSONObject obj = audios.getJSONObject(i);
-      boolean hasFound = false;
+      non_filtered.add(obj);
+      
+      boolean is_disabled = false;
+      boolean is_same_speaker = false;
+      boolean is_from_text_field = false;
+
+      boolean can_play = false;      
+
       // if audio is disabled, dont add to filtered list
       if (obj.isNull("disabled") == false) {
-        boolean is_disabled = obj.getBoolean("disabled"); 
-        if (is_disabled) hasFound = true;
+        is_disabled = obj.getBoolean("disabled"); 
       }
 
       String cur_id = obj.getString("user_id").toLowerCase();
       String cur_name = obj.getString("name").toLowerCase();
       String textFilter = voices[voiceIndex].textFilter;
+
+      println("test", is_disabled, cur_id, cur_name);
+
+
       // check text filter is set
       if (!voices[voiceIndex].textFilter.equals("")){
-        hasFound = !(cur_name.contains(textFilter) || cur_id.contains(textFilter));
+        is_from_text_field = (cur_name.contains(textFilter.toLowerCase()) || cur_id.contains(textFilter.toLowerCase()));
       }
 
       // if its from same speaker...
       for (String id : getCurrentSpeakerId()) {
-         if (cur_id.equals(id)) {
-            hasFound = true;
-         }
+        if (cur_id.equals(id)) {
+            is_same_speaker = true;
+        }
       }
+
+      // if auto, dont play same speaker if possible
+      if (auto_mode) {
+        can_play = !is_disabled; 
+      } else {
+        can_play = !is_disabled && is_from_text_field;
+      }
+      
       // dont add to filtered list
-      if (!hasFound) {
+      if (can_play) {
          filtered.add(obj);
       }
     }
-    int index = floor(random(0, filtered.size())); 
-    return filtered.get(index);
+    println("filtered.size()", filtered.size());
+    if (filtered.size() > 0) {
+      //  int index = floor(random(0, filtered.size())); 
+      return filtered.get(floor(random(0, filtered.size())));
+    } else {
+      // int index = floor(random(0, audios.size())); 
+      return non_filtered.get(floor(random(0, non_filtered.size())));
+    }
+    
   }
   
   ArrayList<String> getCurrentSpeakerId () {

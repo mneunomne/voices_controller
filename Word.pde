@@ -1,15 +1,16 @@
 class Word {
   String source_path = "C:/Users/mneunomne/archive_folder_sync/texts/";
   String dest_path = "data/points/";
-  JSONObject audio;
+  JSONObject audio_data;
   String audio_id;
   String user_id;
   int img_w;
   int img_h;
 
-  Word (JSONObject audio) {
-    audio_id = audio.getString("id");
-    user_id = audio.getString("user_id");
+  Word (JSONObject _audio_data) {
+    audio_data = _audio_data;
+    audio_id = audio_data.getString("id");
+    user_id = audio_data.getString("user_id");
   }
 
   void load () {
@@ -19,7 +20,6 @@ class Word {
     boolean exist = f.isFile();
     // dont continue if file already exists
     if (!exist) return;
-    println("filepath", filepath, exist);
     // load svg image
     PShape svg;
     svg = loadShape(filepath);
@@ -28,6 +28,8 @@ class Word {
 
     // save json file
     saveJSON(getPoints(svg));
+    println("[Word] Saved svg file at " + filepath);
+    oscController.sendNewAudio(audio_data);
   }
 
   ArrayList<PVector> getPoints (PShape svg) {

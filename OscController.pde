@@ -79,6 +79,7 @@ class OscController {
   }
 
   void onNewAudio (OscMessage theOscMessage) {
+    String jsonString = theOscMessage.get(0).stringValue();
     JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
     // println("[OscController] new_audio_data", new_audio_data);
     // not use direct function to avoid threading
@@ -86,11 +87,17 @@ class OscController {
     hasNewAudio = true;
   }
 
+  void sendNewAudio (JSONObject new_audio_data) {
+    // send new audio to visualization
+    OscMessage visMessage = new OscMessage("/new_audio");
+    visMessage.add(new_audio_data.toString());
+    oscP5.send(visMessage, localBroadcast);
+  }
+
   void sendBlur (float value) {
     OscMessage visMessage = new OscMessage("/blur");
     visMessage.add(value);
     oscP5.send(visMessage, localBroadcast);
-    println("send blur message!", value);
   }
 
   void oscEvent(OscMessage theOscMessage) {

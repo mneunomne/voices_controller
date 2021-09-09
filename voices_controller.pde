@@ -41,6 +41,7 @@ boolean idle = true;
 boolean running = false;
 
 JSONObject newAudio;
+String lastAudio = "";
 boolean hasNewAudio = false;
 
 int waveform_h = 150;
@@ -62,11 +63,14 @@ void setup () {
   cp5.setColorBackground(color(255, 20));
 
   //font 
-  font = createFont("arial", 12);
+  font = createFont("Courier New", 12);
 
   // setup debug canvas
   pg = createGraphics(debugWidth, debugWidth, P2D);
   pg.ellipseMode(RADIUS);
+
+  pg.textFont(font);
+  textFont(font);
 
 
   // Graphical user interface
@@ -111,6 +115,7 @@ void update() {
   if (dbLoaded) {
     if (hasNewAudio) {
       archive.addNewAudio(newAudio);
+      lastAudio =  newAudio.toString().replace("\n", "");
       hasNewAudio = false;
     }
 
