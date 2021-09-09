@@ -11,6 +11,7 @@ public class Voice {
   boolean isActive = false;
   float reverb = 0;
   String textFilter = "";
+  int additionalMillis = 1000;
   Voice (int _index, boolean _isActive, int _interval) {
     interval = _interval;
     index = _index;
@@ -23,7 +24,7 @@ public class Voice {
     lastTimeCheck = millis();
     isPlaying = true;
     // get audio data
-    curAudioDuration = audio.getFloat("duration") * 1000 + 500;
+    curAudioDuration = audio.getFloat("duration") * 1000 + additionalMillis;
     currentSpeakerId = audio.getString("user_id");
     curAudioId = audio.getString("id");
     currentSpeakerName = audio.getString("name");
