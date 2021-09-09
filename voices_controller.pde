@@ -28,20 +28,23 @@ float innerRadius = 1;
 float outerRadius = 3.5;
 float maxRadius = 5;
 float debugRadius = 4;
-
 int debugWidth = 583 - 20; 
-
 float debugScale = debugWidth / (debugRadius*2); 
 
+// loaded states
 boolean dbLoaded = false;
 boolean firstLoaded = false;
 
+// States
 boolean auto_mode = true;
+boolean idle = true;
+boolean running = false;
 
 JSONObject newAudio;
 boolean hasNewAudio = false;
 
-int waveform_h = 100;
+int waveform_h = 150;
+float wave_speed = 1;
 WaveForm waveform;
 
 int fr = 30;
@@ -50,12 +53,13 @@ PFont font;
 
 Chart myChart;
 
+
 void setup () {
   size(1280, 1024, P2D);
 
   cp5 = new ControlP5(this);
-  cp5.setColorForeground(color(255));
-  cp5.setColorBackground(color(80));
+  cp5.setColorForeground(color(255, 80));
+  cp5.setColorBackground(color(255, 20));
 
   //font 
   font = createFont("arial", 12);
@@ -122,6 +126,15 @@ void loadDatabase () {
   archive.load();
 }
 
+void startAuto () {
+  waveform.start();
+}
+
+void goIdle () {
+  // to do, transition, waveform
+  waveform.reset();
+}
+
 void controlEvent(ControlEvent theControlEvent) {
   if(!dbLoaded) return;
 
@@ -183,4 +196,21 @@ void blur (float value) {
 void auto_mode (float value) {
   auto_mode = value == 1.0;
   //println("value", value);
+}
+
+void wave_speed (float value) {
+  wave_speed = value;
+}
+
+void set_states (int value) {
+  println("set_states", value);
+  idle = value == 1;
+  running = value == 2;
+  if (running && auto_mode) {
+    startAuto();
+  }
+
+  if (idle && auto_mode) {
+    goIdle();
+  }
 }

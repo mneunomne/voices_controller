@@ -121,11 +121,11 @@ public class Gui {
 
   void setup_general () {
     //int width = 306;
-    int group_width = width - (582 + 306);
+    int group_width = width - (582 + 306) - padding * 2;
     int group_height = height - padding * 2;
     int px = 582 + 306 + padding;
     int py = padding + label_padding_top;
-    int cp_width = group_width - padding * 2;
+    int cp_width = group_width - padding * 2 - label_padding_right;
     int cp_height = 20;
 
     Group group = cp5.addGroup("general")
@@ -144,6 +144,17 @@ public class Gui {
       .setValue(60)
       .setGroup(group)
       ;
+    fx_y+= cp_height+padding;
+
+    cp5.addSlider("wave_speed")
+      .setPosition(fx_x,fx_y)
+      .setSize(cp_width,cp_height)
+      .setRange(0, 10)
+      .setValue(1)
+      .setGroup(group)
+      ;
+
+    fx_y+= cp_height+padding;
 
     fx_y+= cp_height+padding;
     cp_height = 20;
@@ -168,16 +179,30 @@ public class Gui {
       .setGroup(group)
       .setValue(true)
       ;
+    fx_y+= cp_height+padding;
+
+    cp5.addRadioButton("set_states")
+      .setPosition(fx_x,fx_y)
+      .setSize(20,20)
+      .setItemsPerRow(2)
+      .setSpacingColumn(50)
+      .addItem("idle",1)
+      .addItem("started",2)
+      .activate(0)
+      .setGroup(group)
+      ;
 
     cp_width = group_width - padding * 2;
-    fx_y = height - (waveform_h * 2) - padding*2 - 20; 
+    fx_y = height - (waveform_h * 3) - padding*6 - 40; 
     myChart = cp5.addChart("dataflow")
-      .setPosition(0, fx_y)
+      .setPosition(fx_x, fx_y)
       .setSize(cp_width, waveform_h)
       .setRange(0, 1)
       .setView(Chart.LINE) // use Chart.LINE, Chart.PIE, Chart.AREA, Chart.BAR_CENTERED
       .setStrokeWeight(1.5)
-      .setColorCaptionLabel(color(40))
+      .setColorBackground(color(20))
+      .setColorForeground(color(255))
+      .setColorCaptionLabel(color(255))
       .setGroup(group)
       ;
     myChart.addDataSet("incoming");
@@ -210,10 +235,12 @@ public class Gui {
 
     int waveform_w = pg.width;
     int px = 582 + 306 + padding;
-    int py = height - waveform_h - padding*2; 
+    int py = height - waveform_h * 2 - padding*4; 
     pushMatrix();
       translate(px, py + padding + waveform_h/2);
-      waveform.draw();
+      waveform.curDraw();
+      translate(0, waveform_h + padding * 2);
+      waveform.nextDraw();
     popMatrix();
   }
 }
