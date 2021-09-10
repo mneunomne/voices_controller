@@ -66,9 +66,6 @@ public class Orchestration {
       String cur_name = obj.getString("name").toLowerCase();
       String textFilter = voices[voiceIndex].textFilter;
 
-      println("test", is_disabled, cur_id, cur_name);
-
-
       // check text filter is set
       if (!voices[voiceIndex].textFilter.equals("")){
         is_from_text_field = (cur_name.contains(textFilter.toLowerCase()) || cur_id.contains(textFilter.toLowerCase()));
