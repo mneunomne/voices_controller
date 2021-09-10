@@ -53,7 +53,7 @@ public class Orchestration {
       
       boolean is_disabled = false;
       boolean is_same_speaker = false;
-      boolean is_from_text_field = false;
+      boolean is_from_text_field = true;
 
       boolean can_play = false;      
 

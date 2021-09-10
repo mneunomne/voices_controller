@@ -63,7 +63,7 @@ public class Voice {
     isActive = val;
     if (isActive == false) {
       if (isPlaying) {
-        // end();
+        end();
       } else {
         reset();
       }
@@ -89,8 +89,8 @@ public class Voice {
       // send effect values
       oscController.sendReverb(currentSpeakerId, reverb);
       // check if audio has finnished playing
-      if (millis() > lastTimeCheck + curAudioDuration) {
-        end();
+      if (millis() > lastTimeCheck + curAudioDuration + additionalMillis * 3) {
+        // end();
       }
     }
     
