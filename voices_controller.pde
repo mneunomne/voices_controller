@@ -20,7 +20,7 @@ PGraphics pg;
 
 int maxNumVoices = 8;
 int numActiveVoices = 0;
-int initialInterval = 5000;
+int initialInterval = 3000;
 
 // value in meters
 float projectionRadius = 3;

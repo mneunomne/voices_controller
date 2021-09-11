@@ -76,6 +76,7 @@ class WaveForm {
   }
   
   void start() {
+    println("[waveform] start!");
     framecount = startInterval;
     curData = nextData;
     curData2 = nextData2;
@@ -119,9 +120,11 @@ class WaveForm {
   }
   
   void onEnd() {
+    println("[waveform] onEnd!", playedNewAudio);
     reset();
     if (playedNewAudio) {
       idle = true;
+      running = false;
     } else {
       startAuto();
     }

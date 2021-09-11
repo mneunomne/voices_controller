@@ -97,6 +97,7 @@ class OscController {
 
     println("idle auto_mode", idle, auto_mode);
     if (idle && auto_mode) {
+      playedNewAudio = true;
       startAuto();
     }
 
@@ -123,6 +124,7 @@ class OscController {
 
     println("idle auto_mode", idle, auto_mode);
     if (idle && auto_mode) {
+      playedNewAudio = true;
       startAuto();
     }
     // also load database in general

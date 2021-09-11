@@ -99,6 +99,7 @@ public class Voice {
         if (millis() > lastTimeCheck + interval) {
           if (index == 0 && hasNewAudioToPlay) {
             play(newAudio);
+            hasNewAudioToPlay = false;
           } else {
             JSONObject audio = orchestration.getNextAudio(index);
             play(audio);
