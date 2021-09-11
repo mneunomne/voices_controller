@@ -52,10 +52,10 @@ class Archive {
     // add new user if it doesnt exists yet
     addNewUser(new_audio_data);
 
-    // if its in idle mode, start! /////// maybe wait for a bit?
+    // if its in idle mode, start!
     if (idle && auto_mode) {
-      delay(startAutoInterval);
       startAuto();
+      playedNewAudio = true;
     }
   }
 

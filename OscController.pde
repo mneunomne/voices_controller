@@ -85,6 +85,48 @@ class OscController {
     // not use direct function to avoid threading
     newAudio = new_audio_data;
     hasNewAudio = true;
+    boolean is_disabled = false;
+    if (new_audio_data.isNull("disabled") == false) {
+      is_disabled = new_audio_data.getBoolean("disabled");
+    }
+
+    if (!is_disabled) {
+      hasNewAudioToPlay = true;
+      println("hasNewAudioToPlay!");
+    }
+
+    println("idle auto_mode", idle, auto_mode);
+    if (idle && auto_mode) {
+      startAuto();
+    }
+
+    println("onUpdateAudio is_disabled", is_disabled);
+  }
+  
+  void onUpdateAudio(OscMessage theOscMessage) {
+    String jsonString = theOscMessage.get(0).stringValue();
+    JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
+
+    boolean is_disabled = false;
+    if (new_audio_data.isNull("disabled") == false) {
+      is_disabled = new_audio_data.getBoolean("disabled");
+    }
+
+    println("onUpdateAudio");
+    println("is_disabled", is_disabled);
+
+    newAudio = new_audio_data;
+    if (!is_disabled) {
+      hasNewAudioToPlay = true;
+      println("hasNewAudioToPlay!");
+    }
+
+    println("idle auto_mode", idle, auto_mode);
+    if (idle && auto_mode) {
+      startAuto();
+    }
+    // also load database in general
+    loadDatabase();
   }
 
   void sendNewAudio (JSONObject new_audio_data) {
@@ -93,6 +135,7 @@ class OscController {
     visMessage.add(new_audio_data.toString());
     oscP5.send(visMessage, localBroadcast);
   }
+  
 
   void sendBlur (float value) {
     OscMessage visMessage = new OscMessage("/blur");
@@ -111,7 +154,7 @@ class OscController {
     }
 
     if (theOscMessage.checkAddrPattern("/update_audio")) {
-      loadDatabase();
+      onUpdateAudio(theOscMessage);
     }
 
     if (theOscMessage.checkAddrPattern("/waveform1")) {

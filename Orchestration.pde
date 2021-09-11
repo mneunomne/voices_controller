@@ -90,7 +90,6 @@ public class Orchestration {
          filtered.add(obj);
       }
     }
-    println("filtered.size()", filtered.size());
     if (filtered.size() > 0) {
       //  int index = floor(random(0, filtered.size())); 
       return filtered.get(floor(random(0, filtered.size())));

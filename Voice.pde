@@ -12,11 +12,11 @@ public class Voice {
   float reverb = 0;
   String textFilter = "";
   int additionalMillis = 1000;
+
   Voice(int _index, boolean _isActive, int _interval) {
     interval = _interval;
     index = _index;
     isActive = _isActive;
-    
   }
   
   void play(JSONObject audio) {
@@ -97,9 +97,12 @@ public class Voice {
     if (isActive) {
       if (!isPlaying) {
         if (millis() > lastTimeCheck + interval) {
-          // here pick on audio 
-          JSONObject audio = orchestration.getNextAudio(index);
-          play(audio);
+          if (index == 0 && hasNewAudioToPlay) {
+            play(newAudio);
+          } else {
+            JSONObject audio = orchestration.getNextAudio(index);
+            play(audio);
+          }
         }
       }
     } 

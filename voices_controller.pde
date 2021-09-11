@@ -43,7 +43,8 @@ boolean running = false;
 JSONObject newAudio;
 String lastAudio = "";
 boolean hasNewAudio = false;
-boolean addedNewAudio = false; 
+boolean addedNewAudio = false;
+boolean hasNewAudioToPlay = false; 
 boolean playedNewAudio = false;
 
 int waveform_h = 150;
@@ -118,8 +119,10 @@ void draw () {
 
 void update() {
   if (dbLoaded) {
+    // if there is a new audio, add it to archive
     if (hasNewAudio && !addedNewAudio) {
       archive.addNewAudio(newAudio);
+      // debug text
       lastAudio =  newAudio.toString().replace("\n", "");
       // hasNewAudio = false;
       addedNewAudio = true;
@@ -138,12 +141,18 @@ void loadDatabase () {
 }
 
 void startAuto () {
+  println("start auto");
+  // playedNewAudio = true;
+  idle = false;
+  running = true;
   waveform.start();
 }
 
 void goIdle () {
   // to do, transition, waveform
+  println("goIdle!");
   waveform.reset();
+  idle = true;
 }
 
 void controlEvent(ControlEvent theControlEvent) {

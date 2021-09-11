@@ -149,7 +149,7 @@ public class Gui {
     cp5.addSlider("wave_speed")
       .setPosition(fx_x,fx_y)
       .setSize(cp_width,cp_height)
-      .setRange(0, 10)
+      .setRange(0, 100)
       .setValue(1)
       .setGroup(group)
       ;

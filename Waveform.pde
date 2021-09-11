@@ -9,7 +9,7 @@ class WaveForm {
   ArrayList<Float> nextData = new ArrayList<Float>();
   // data with half the amout of data, since we only need one side of the waveform
   ArrayList<Float> nextData2 = new ArrayList<Float>();
-
+  
   JSONArray values;
   float[] bars = new float[maxNumVoices];
   int h = 50;
@@ -85,10 +85,14 @@ class WaveForm {
     if (!auto_mode) return;
     // always calculate current value
     if (auto_mode && !idle) {
-      curTime = (max(framecount, 0) / fr) % (curData2.size() - 1);
+      curTime = (max(framecount, 0) / fr);
       framecount += wave_speed;
-      println("framecount", framecount);
-      targetValue = curData2.get(curTime);
+      if (curTime < curData2.size()) {
+        targetValue = curData2.get(curTime);
+      } else {
+        onEnd();
+      }
+      
     }
     // get curvalue with tween
     curValue = curValue + (targetValue - curValue) * 0.1;
@@ -113,37 +117,46 @@ class WaveForm {
     }
     
   }
-    
-    void curDraw() {
-      //current data
-      noFill();
-      int x = 0;
-      for (int i = 0; i < curData.size(); i++) {
-        float d = curData.get(i);
-        line(x, 0, x, d * h / 2);
-        if(i % 2 == 0) x++; 
-      }
-      
-      stroke(0, 255, 0);
-      line(curTime, h / 2, curTime, -h / 2);
-      text("current value:" + curValue, 0, -h / 2 - 40);
-      text("current bar:" + curBar, 0, -h / 2 - 25);
-      text("current waveform:", 0, -h / 2 - 10);
-      stroke(255);
-      rect(0, -h / 2, x, h);
-    }
-    void nextDraw() {
-      //current data
-      noFill();
-      int x = 0;
-      stroke(200);
-      for (int i = 0; i < nextData.size(); i++) {
-        float d = nextData.get(i);
-        line(x, 0, x, d * h / 2);
-        if(i % 2 == 0) x++; 
-      }
-      text("next waveform:", 0, -h / 2 - 10);
-      stroke(255);
-      rect(0, -h / 2, x, h);
+  
+  void onEnd() {
+    reset();
+    if (playedNewAudio) {
+      idle = true;
+    } else {
+      startAuto();
     }
   }
+  
+  void curDraw() {
+    //current data
+    noFill();
+    int x = 0;
+    for (int i = 0; i < curData.size(); i++) {
+      float d = curData.get(i);
+      line(x, 0, x, d * h / 2);
+      if (i % 2 == 0) x++; 
+    }
+    
+    stroke(0, 255, 0);
+    line(curTime, h / 2, curTime, -h / 2);
+    text("current value:" + curValue, 0, -h / 2 - 40);
+    text("current bar:" + curBar, 0, -h / 2 - 25);
+    text("current waveform:", 0, -h / 2 - 10);
+    stroke(255);
+    rect(0, -h / 2, x, h);
+  }
+  void nextDraw() {
+    //current data
+    noFill();
+    int x = 0;
+    stroke(200);
+    for (int i = 0; i < nextData.size(); i++) {
+      float d = nextData.get(i);
+      line(x, 0, x, d * h / 2);
+      if (i % 2 == 0) x++; 
+    }
+    text("next waveform:", 0, -h / 2 - 10);
+    stroke(255);
+    rect(0, -h / 2, x, h);
+  }
+}
