@@ -45,25 +45,18 @@ class Archive {
   void addNewAudio (JSONObject new_audio_data) {
     audios.append(new_audio_data);
     
-    /*
-    TEST
-    delay(1000);
-    // play new audio;
-    String user_id = new_audio_data.getString("user_id");
-    String audio_id = new_audio_data.getString("id");
-    String text = new_audio_data.getString("text");
-    int index = 0;
-    oscController.sendOscplay(user_id, audio_id, text, index);
-
-    println("[Archive] New audio data appended, with now " + audios.size() + " audios");
-    */
-    
     // create points json file for new audio...
     Word word = new Word(new_audio_data);
     words.add(word);
     word.load();
     // add new user if it doesnt exists yet
     addNewUser(new_audio_data);
+
+    // if its in idle mode, start! /////// maybe wait for a bit?
+    if (idle && auto_mode) {
+      delay(startAutoInterval);
+      startAuto();
+    }
   }
 
   void addNewUser (JSONObject new_audio_data) {

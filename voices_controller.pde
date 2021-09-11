@@ -43,6 +43,8 @@ boolean running = false;
 JSONObject newAudio;
 String lastAudio = "";
 boolean hasNewAudio = false;
+boolean addedNewAudio = false; 
+boolean playedNewAudio = false;
 
 int waveform_h = 150;
 float wave_speed = 1;
@@ -54,6 +56,9 @@ PFont font;
 
 Chart myChart;
 
+int startAutoInterval = 1000;
+
+int startInterval=100;
 
 void setup () {
   size(1280, 1024, P2D);
@@ -87,7 +92,7 @@ void setup () {
   archive = new Archive();
   thread("loadDatabase");
 
-  frameRate(30);
+  frameRate(fr);
 }
 
 void onArchiveLoaded () {
@@ -113,10 +118,11 @@ void draw () {
 
 void update() {
   if (dbLoaded) {
-    if (hasNewAudio) {
+    if (hasNewAudio && !addedNewAudio) {
       archive.addNewAudio(newAudio);
       lastAudio =  newAudio.toString().replace("\n", "");
-      hasNewAudio = false;
+      // hasNewAudio = false;
+      addedNewAudio = true;
     }
 
     waveform.update();
@@ -218,4 +224,22 @@ void set_states (int value) {
   if (idle && auto_mode) {
     goIdle();
   }
+}
+
+void set_start_delay (float value) {
+  println("startInterval", startInterval);
+  startInterval = int(value) * -1 * fr; 
+}
+
+void keyPressed () {
+ switch(key) {
+  case 'l':
+    // loads the saved layout
+    cp5.loadProperties();
+    break;
+  case 's':
+    // saves the layout
+    cp5.saveProperties();
+    break;
+ }
 }

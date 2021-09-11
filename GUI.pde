@@ -155,6 +155,15 @@ public class Gui {
       ;
 
     fx_y+= cp_height+padding;
+    cp5.addSlider("set_start_delay")
+      .setPosition(fx_x,fx_y)
+      .setSize(cp_width,cp_height)
+      .setRange(0, 120)
+      .setValue(4)
+      .setGroup(group)
+      ;
+
+    fx_y+= cp_height+padding;
 
     fx_y+= cp_height+padding;
     cp_height = 20;

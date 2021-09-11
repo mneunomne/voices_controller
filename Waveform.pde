@@ -13,18 +13,19 @@ class WaveForm {
   JSONArray values;
   float[] bars = new float[maxNumVoices];
   int h = 50;
-  int framecount = 0;
   int curTime = 0;
   float curValue = 0; 
   float targetValue = 0;
   int curRange = 0;
   int curBar = 0;
+  int framecount = 0;
   // PGraphics wavecanvas;
   WaveForm(int _h) {
     h = _h;
     for (int i = 0; i < maxNumVoices; i++) {
       bars[i] = (1.0 / maxNumVoices) * i;
     }
+    framecount = startInterval;
   }
   
   void loadDataChunk(int index, OscMessage theOscMessage) {
@@ -70,11 +71,12 @@ class WaveForm {
   
   void reset() {
     curTime = 0; 
-    framecount = 0;
+    framecount = startInterval;
     targetValue = 0;
   }
   
   void start() {
+    framecount = startInterval;
     curData = nextData;
     curData2 = nextData2;
   }
@@ -83,8 +85,9 @@ class WaveForm {
     if (!auto_mode) return;
     // always calculate current value
     if (auto_mode && !idle) {
-      curTime = (framecount / fr) % (curData2.size() - 1);
+      curTime = (max(framecount, 0) / fr) % (curData2.size() - 1);
       framecount += wave_speed;
+      println("framecount", framecount);
       targetValue = curData2.get(curTime);
     }
     // get curvalue with tween
