@@ -1,14 +1,9 @@
 class WaveForm {
   // full audio data, to draw waveform
-  ArrayList<Float> curData = new ArrayList<Float>();
+  ArrayList<Float> data = new ArrayList<Float>();
   // data with half the amout of data, since we only need one side of the waveform
-  ArrayList<Float> curData2 = new ArrayList<Float>();
+  ArrayList<Float> data2 = new ArrayList<Float>();
   // for next loaded audio
-  
-  // full audio data, to draw waveform
-  ArrayList<Float> nextData = new ArrayList<Float>();
-  // data with half the amout of data, since we only need one side of the waveform
-  ArrayList<Float> nextData2 = new ArrayList<Float>();
   
   JSONArray values;
   float[] bars = new float[maxNumVoices];
@@ -30,7 +25,7 @@ class WaveForm {
   
   void loadDataChunk(int index, OscMessage theOscMessage) {
     if (index == 0) {
-      nextData.clear();
+      data.clear();
     }
     String msg = theOscMessage.get(0).stringValue();
     String[] list = split(msg, ' ');
@@ -38,9 +33,9 @@ class WaveForm {
     for (String n : list) {
       // println(n);
       float val = Float.parseFloat(n);
-      nextData.add(val);
+      data.add(val);
       if (i % 2 == 0) {
-        nextData2.add(val);
+        data2.add(val);
       }
       i++;
     }
@@ -51,20 +46,20 @@ class WaveForm {
   
   void saveJson() {
     values = new JSONArray();
-    for (int i = 0; i < curData.size(); i++) {
-      values.setFloat(i, curData.get(i));
+    for (int i = 0; i < data.size(); i++) {
+      values.setFloat(i, data.get(i));
     }
     saveJSONArray(values, "data/waveform.json");
   }
   
   void loadJson() {
-    nextData.clear();
+    data.clear();
     values = loadJSONArray("data/waveform.json");
     for (int i = 0; i < values.size(); i++) {
       float val = values.getFloat(i);
-      nextData.add(val);
+      data.add(val);
       if (i % 2 == 0) {
-        nextData2.add(val);
+        data2.add(val);
       }
     }
   }
@@ -78,8 +73,6 @@ class WaveForm {
   void start() {
     println("[waveform] start!");
     framecount = startInterval;
-    curData = nextData;
-    curData2 = nextData2;
   }
   
   void update() {
@@ -88,8 +81,8 @@ class WaveForm {
     if (auto_mode && !idle) {
       curTime = (max(framecount, 0) / fr);
       framecount += wave_speed;
-      if (curTime < curData2.size()) {
-        targetValue = curData2.get(curTime);
+      if (curTime < data2.size()) {
+        targetValue = data2.get(curTime);
       } else {
         onEnd();
       }
@@ -134,8 +127,8 @@ class WaveForm {
     //current data
     noFill();
     int x = 0;
-    for (int i = 0; i < curData.size(); i++) {
-      float d = curData.get(i);
+    for (int i = 0; i < data.size(); i++) {
+      float d = data.get(i);
       line(x, 0, x, d * h / 2);
       if (i % 2 == 0) x++; 
     }
@@ -145,20 +138,6 @@ class WaveForm {
     text("current value:" + curValue, 0, -h / 2 - 40);
     text("current bar:" + curBar, 0, -h / 2 - 25);
     text("current waveform:", 0, -h / 2 - 10);
-    stroke(255);
-    rect(0, -h / 2, x, h);
-  }
-  void nextDraw() {
-    //current data
-    noFill();
-    int x = 0;
-    stroke(200);
-    for (int i = 0; i < nextData.size(); i++) {
-      float d = nextData.get(i);
-      line(x, 0, x, d * h / 2);
-      if (i % 2 == 0) x++; 
-    }
-    text("next waveform:", 0, -h / 2 - 10);
     stroke(255);
     rect(0, -h / 2, x, h);
   }
