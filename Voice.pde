@@ -63,7 +63,8 @@ public class Voice {
     isActive = val;
     if (isActive == false) {
       if (isPlaying) {
-        end();
+        // not end when voice is not active anymore, wait for audio to change
+        // end();
       } else {
         reset();
       }
@@ -91,16 +92,20 @@ public class Voice {
       // check if audio has finnished playing
       if (millis() > lastTimeCheck + curAudioDuration + additionalMillis * 3) {
         end();
+        lastTimeCheck = millis();
       }
     }
     
     if (isActive) {
       if (!isPlaying) {
         if (millis() > lastTimeCheck + interval) {
-          if (index == 0 && hasNewAudioToPlay) {
+          // play contribiuted audio
+          boolean chance = random(1) > (1 - newAudioChance);
+          if (index == 0 && hasNewAudioToPlay && chance) {
             play(newAudio);
             hasNewAudioToPlay = false;
           } else {
+            // play random audio
             JSONObject audio = orchestration.getNextAudio(index);
             play(audio);
           }

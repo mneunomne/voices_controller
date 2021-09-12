@@ -72,6 +72,11 @@ class OscController {
     oscP5.send(visMessage, localBroadcast);
   }
 
+  void sendOscStart () {
+    OscMessage audioMessage = new OscMessage("/start");
+    oscP5.send(audioMessage, remoteBroadcast);
+  }
+
   void onNewAudio (OscMessage theOscMessage) {
     String jsonString = theOscMessage.get(0).stringValue();
     JSONObject new_audio_data = parseJSONObject(theOscMessage.get(0).stringValue());
@@ -90,9 +95,10 @@ class OscController {
     }
 
     println("idle auto_mode", idle, auto_mode);
+    
     if (idle && auto_mode) {
-      playedNewAudio = true;
-      startAuto();
+      // playedNewAudio = true;
+      // startAuto();
     }
 
     println("onUpdateAudio is_disabled", is_disabled);

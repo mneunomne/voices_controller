@@ -7,7 +7,8 @@ public class Orchestration {
     audios = _audios;
     // initiate all voices
     for (int i = 0; i < maxNumVoices; i++) {
-     voices[i] = new Voice(i, i < numActiveVoices, initialInterval); 
+      int interval = int(cp5.getController("interval_" + i).getValue());
+      voices[i] = new Voice(i, i < numActiveVoices, interval); 
     }
   }
   
@@ -80,7 +81,7 @@ public class Orchestration {
 
       // if auto, dont play same speaker if possible
       if (auto_mode) {
-        can_play = !is_disabled; 
+        can_play = !is_disabled && !is_same_speaker; 
       } else {
         can_play = !is_disabled && is_from_text_field;
       }

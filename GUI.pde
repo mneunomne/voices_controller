@@ -83,11 +83,11 @@ public class Gui {
         .setSize(20,20)
         .setGroup(group)
         ;
-      cp5.addSlider("reverb_" + i)
+      cp5.addSlider("interval_" + i)
         .setPosition(fx_x,fx_y)
         .setSize(cp_width,cp_height)
-        .setRange(-1, 1)
-        .setValue(0)
+        .setRange(0, 10000)
+        .setValue(8000 - i * (8000/maxNumVoices))
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
@@ -126,7 +126,7 @@ public class Gui {
     int px = 582 + 306 + padding;
     int py = padding + label_padding_top;
     int cp_width = group_width - padding * 2 - label_padding_right;
-    int cp_height = 20;
+    int cp_height = 15;
 
     Group group = cp5.addGroup("general")
       .setWidth(group_width)
@@ -164,6 +164,13 @@ public class Gui {
       ;
 
     fx_y+= cp_height+padding;
+    cp5.addSlider("new_audio_chance")
+      .setPosition(fx_x,fx_y)
+      .setSize(cp_width,cp_height)
+      .setRange(0, 1)
+      .setValue(0.25)
+      .setGroup(group)
+      ;
 
     fx_y+= cp_height+padding;
     cp_height = 20;
@@ -190,14 +197,22 @@ public class Gui {
       ;
     fx_y+= cp_height+padding;
 
-    cp5.addRadioButton("set_states")
+    cp5.addToggle("loop")
       .setPosition(fx_x,fx_y)
       .setSize(20,20)
-      .setItemsPerRow(2)
-      .setSpacingColumn(50)
-      .addItem("idle",1)
-      .addItem("started",2)
-      .activate(0)
+      .setGroup(group)
+      .setValue(false)
+      ;
+    fx_y+= cp_height+padding;
+
+    cp5.addBang("idle")
+      .setPosition(fx_x,fx_y)
+      .setSize(20,20)
+      .setGroup(group)
+      ;
+    cp5.addBang("started")
+      .setPosition(fx_x+100,fx_y)
+      .setSize(20,20)
       .setGroup(group)
       ;
 
@@ -242,6 +257,7 @@ public class Gui {
     pg.endDraw();
     image(pg, padding, padding);
 
+
     // osc texts
     int gui_audio_h = height-200 - padding * 2;
     text("new audio:", padding, gui_audio_h-30);
@@ -254,6 +270,23 @@ public class Gui {
     pushMatrix();
       translate(px, py + padding + waveform_h/2);
       waveform.curDraw();
+    popMatrix();
+    // state machine debug
+    py = height - waveform_h * 4 - padding*4; 
+    pushMatrix();
+      translate(px, py);
+      // loaded states
+      text("dbLoaded: " + dbLoaded, 0, 15);
+      text("firstLoaded: " + firstLoaded, 0, 30);
+      text("auto_mode: " + auto_mode, 0, 45);
+      text("idle: " + idle, 0, 60);
+      text("running: " + running, 0, 75);
+      // other things
+      text("lastAudio: " + lastAudio, 160,  15);
+      text("hasNewAudio: " + hasNewAudio, 160,   30);
+      text("addedNewAudio: " + addedNewAudio, 160,   45);
+      text("hasNewAudioToPlay: " + hasNewAudioToPlay, 160,   60);
+      text("playedNewAudio: " + playedNewAudio, 160,   75);
     popMatrix();
   }
 }

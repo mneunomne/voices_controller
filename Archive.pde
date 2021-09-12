@@ -55,8 +55,8 @@ class Archive {
 
     // if its in idle mode, start!
     if (idle && auto_mode) {
-      startAuto();
-      playedNewAudio = true;
+      // startAuto();
+      // playedNewAudio = true;
     }
   }
 

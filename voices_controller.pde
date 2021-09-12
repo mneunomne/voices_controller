@@ -20,7 +20,6 @@ PGraphics pg;
 
 int maxNumVoices = 8;
 int numActiveVoices = 0;
-int initialInterval = 3000;
 
 // value in meters
 float projectionRadius = 3;
@@ -39,6 +38,7 @@ boolean firstLoaded = false;
 boolean auto_mode = true;
 boolean idle = true;
 boolean running = false;
+boolean loop = false;
 
 JSONObject newAudio;
 String lastAudio = "";
@@ -57,9 +57,9 @@ PFont font;
 
 Chart myChart;
 
-int startAutoInterval = 1000;
+int startDelay=100;
 
-int startInterval=100;
+float newAudioChance = 0.25;
 
 JSONObject config;
 // GLOBAL CONFIGS
@@ -70,6 +70,7 @@ int visualPort = 32000;
 String text_svg_folder = "/Users/hfkmacmini/archive_folder_sync/texts/";
 
 void setup () {
+  // fullScreen(P2D, 1);
   size(1280, 1024, P2D);
 
   // load config
@@ -118,6 +119,7 @@ void onArchiveLoaded () {
     println("Archive first time Loaded!");
     orchestration = new Orchestration(archive.getAudios());
     firstLoaded = true;
+    
   } else {
     // if not, just update orchestration data
     println("Archive update");
@@ -158,7 +160,7 @@ void loadDatabase () {
 
 void startAuto () {
   println("start auto");
-  // playedNewAudio = true;
+  playedNewAudio = true;
   idle = false;
   running = true;
   waveform.start();
@@ -169,6 +171,11 @@ void goIdle () {
   println("goIdle!");
   waveform.reset();
   idle = true;
+  running = false;
+}
+
+void loadedNewWaveform () {
+  startAuto();
 }
 
 void controlEvent(ControlEvent theControlEvent) {
@@ -198,6 +205,12 @@ void controlEvent(ControlEvent theControlEvent) {
     if(theControlEvent.isFrom("reverb_" + i)) {
       float value = theControlEvent.getValue();
       orchestration.setVoiceReverb(i, value);
+      // oscController.sendReverb(i, value);
+    }
+    // interval
+    if(theControlEvent.isFrom("interval_" + i)) {
+      int value = int(theControlEvent.getValue());
+      orchestration.setVoiceInterval(i, value);
       // oscController.sendReverb(i, value);
     }
     // text filter
@@ -238,22 +251,27 @@ void wave_speed (float value) {
   wave_speed = value;
 }
 
-void set_states (int value) {
-  println("set_states", value);
-  idle = value == 1;
-  running = value == 2;
-  if (running && auto_mode) {
-    startAuto();
-  }
+void idle () {
+  println("idle!");
+  goIdle();
+} 
 
-  if (idle && auto_mode) {
-    goIdle();
-  }
+void started () {
+  println("run!");
+  startAuto();
+}
+
+void loop (float value) {
+  loop = value == 1.0;
 }
 
 void set_start_delay (float value) {
-  println("startInterval", startInterval);
-  startInterval = int(value) * -1 * fr; 
+  println("startDelay", startDelay);
+  startDelay = int(value) * -1 * fr; 
+}
+
+void new_audio_chance (float value) {
+  newAudioChance = value;
 }
 
 void keyPressed () {
