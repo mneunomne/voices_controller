@@ -254,8 +254,6 @@ public class Gui {
     pushMatrix();
       translate(px, py + padding + waveform_h/2);
       waveform.curDraw();
-      translate(0, waveform_h + padding * 2);
-      waveform.nextDraw();
     popMatrix();
   }
 }
