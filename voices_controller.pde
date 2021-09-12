@@ -61,8 +61,24 @@ int startAutoInterval = 1000;
 
 int startInterval=100;
 
+JSONObject config;
+// GLOBAL CONFIGS
+String maxAddress = "10.10.48.85";
+int maxPort = 12000;
+String visualAddress = "127.0.0.1";
+int visualPort = 32000;
+String text_svg_folder = "/Users/hfkmacmini/archive_folder_sync/texts/";
+
 void setup () {
   size(1280, 1024, P2D);
+
+  // load config
+  config = loadJSONObject("data/config.json");
+  maxAddress = config.getString("max_ip");
+  maxPort = config.getInt("max_port");
+  visualAddress = config.getString("visual_ip");
+  visualPort = config.getInt("visual_port");
+  text_svg_folder = config.getString("text_svg_folder");
 
   cp5 = new ControlP5(this);
   cp5.setColorForeground(color(255, 80));

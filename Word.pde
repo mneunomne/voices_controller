@@ -1,5 +1,4 @@
 class Word {
-  String source_path = "/Users/hfkmacmini/archive_folder_sync/texts/";
   String dest_path = "data/points/";
   JSONObject audio_data;
   String audio_id;
@@ -15,7 +14,7 @@ class Word {
 
   void load () {
     // load svg
-    String filepath = source_path + audio_id + ".svg";
+    String filepath = text_svg_folder + audio_id + ".svg";
     File f = dataFile(filepath);
     boolean exist = f.isFile();
     println("[Word] loading " + filepath, exist);

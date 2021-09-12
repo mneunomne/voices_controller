@@ -4,12 +4,6 @@ class OscController {
   NetAddress remoteBroadcast; 
   NetAddress localBroadcast;
 
-  String maxAddress = "192.168.178.71";
-  int maxPort = 12000;
-
-  String visualAddress = "127.0.0.1";
-  int visualPort = 32000;
-
   OscController () {
     // init os controller
   }
