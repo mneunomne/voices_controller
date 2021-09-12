@@ -25,6 +25,7 @@ class Archive {
       for (int i = 0; i < audios.size(); i++) {    
         JSONObject audio = audios.getJSONObject(i);
         Word word = new Word(audio);
+        word.load();
         words.add(word);
       }
     
@@ -80,6 +81,7 @@ class Archive {
   }
 
   void loadSvgs () {
+    println("loadSvgs");
     for (Word word : words) {
       word.load();
     }

@@ -1,5 +1,5 @@
 class Word {
-  String source_path = "C:/Users/mneunomne/archive_folder_sync/texts/";
+  String source_path = "/Users/hfkmacmini/archive_folder_sync/texts/";
   String dest_path = "data/points/";
   JSONObject audio_data;
   String audio_id;
@@ -18,7 +18,8 @@ class Word {
     String filepath = source_path + audio_id + ".svg";
     File f = dataFile(filepath);
     boolean exist = f.isFile();
-    // dont continue if file already exists
+    println("[Word] loading " + filepath, exist);
+    // dont continue if file doesnt exists
     if (!exist) return;
     // load svg image
     PShape svg;
