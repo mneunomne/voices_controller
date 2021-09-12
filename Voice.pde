@@ -90,7 +90,7 @@ public class Voice {
       oscController.sendReverb(currentSpeakerId, reverb);
       // check if audio has finnished playing
       if (millis() > lastTimeCheck + curAudioDuration + additionalMillis * 3) {
-        // end();
+        end();
       }
     }
     
