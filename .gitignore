@@ -1,3 +1,4 @@
 data/points
 *.DS_Store
 waveform.json
+data/config.json
