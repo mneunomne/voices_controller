@@ -95,6 +95,7 @@ public class Orchestration {
       //  int index = floor(random(0, filtered.size())); 
       return filtered.get(floor(random(0, filtered.size())));
     } else {
+      println("non filtered!");
       // int index = floor(random(0, audios.size())); 
       return non_filtered.get(floor(random(0, non_filtered.size())));
     }

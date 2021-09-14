@@ -87,7 +87,7 @@ public class Gui {
         .setPosition(fx_x,fx_y)
         .setSize(cp_width,cp_height)
         .setRange(0, 10000)
-        .setValue(8000 - i * (8000/maxNumVoices))
+        .setValue(500)
         .setGroup(group)
         ;
       fx_y+=cp_height+padding;
@@ -149,8 +149,8 @@ public class Gui {
     cp5.addSlider("wave_speed")
       .setPosition(fx_x,fx_y)
       .setSize(cp_width,cp_height)
-      .setRange(0, 100)
-      .setValue(1)
+      .setRange(0.0, 100.0)
+      .setValue(2)
       .setGroup(group)
       ;
 

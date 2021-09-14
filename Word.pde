@@ -19,7 +19,10 @@ class Word {
     boolean exist = f.isFile();
     println("[Word] loading " + filepath, exist);
     // dont continue if file doesnt exists
-    if (!exist) return;
+    if (!exist) {
+      println("[Word] no svg file, not sending audio=");
+      return;
+    }
     // load svg image
     PShape svg;
     svg = loadShape(filepath);

@@ -23,7 +23,8 @@ class NoiseCircularWalker {
     aoff = aoff + aVel;
     roff = roff + rVel;
     float theta = noise(aoff) * 4 * PI;
-    float radius = min(map(noise(roff), 0, 1, innerRadius, outerRadius), outerRadius);
+    float r_noise = max(min(noise(roff), 0.7), 0.1);
+    float radius = min(map(r_noise, 0.1, 0.7, innerRadius, outerRadius), outerRadius);
     float posX = radius * cos( theta );
     float posY = radius * sin( theta );
     pos = new PVector(posX, posY);
