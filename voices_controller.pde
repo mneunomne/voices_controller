@@ -22,11 +22,11 @@ int maxNumVoices = 8;
 int numActiveVoices = 0;
 
 // value in meters
-float projectionRadius = 3;
+float projectionRadius = 2.80;
 float innerRadius = 1;
-float outerRadius = 3.5;
-float maxRadius = 5;
-float debugRadius = 4;
+float outerRadius = 2.8;
+float maxRadius = 3;
+float debugRadius = 2.80;
 int debugWidth = 583 - 20; 
 float debugScale = debugWidth / (debugRadius*2); 
 
@@ -48,7 +48,7 @@ boolean hasNewAudioToPlay = false;
 boolean playedNewAudio = false;
 
 int waveform_h = 150;
-float wave_speed = 1;
+float wave_speed = 512/300;
 WaveForm waveform;
 
 int fr = 30;
@@ -278,11 +278,11 @@ void keyPressed () {
  switch(key) {
   case 'l':
     // loads the saved layout
-    cp5.loadProperties();
+    // cp5.loadProperties();
     break;
   case 's':
     // saves the layout
-    cp5.saveProperties();
+    // cp5.saveProperties();
     break;
  }
 }

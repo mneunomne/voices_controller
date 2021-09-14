@@ -20,7 +20,6 @@ public class Voice {
   }
   
   void play(JSONObject audio) {
-    println("play!", audio);
     lastTimeCheck = millis();
     isPlaying = true;
     // get audio data
@@ -29,6 +28,7 @@ public class Voice {
     curAudioId = audio.getString("id");
     currentSpeakerName = audio.getString("name");
     curAudioText = audio.getString("text");
+    println("play!", curAudioText);
     // send osc play data 
     oscController.sendOscplay(currentSpeakerId, curAudioId, curAudioText, index);
     
@@ -90,7 +90,7 @@ public class Voice {
       // send effect values
       oscController.sendReverb(currentSpeakerId, reverb);
       // check if audio has finnished playing
-      if (millis() > lastTimeCheck + curAudioDuration + additionalMillis * 3) {
+      if (millis() > lastTimeCheck + curAudioDuration + additionalMillis) {
         end();
         lastTimeCheck = millis();
       }
