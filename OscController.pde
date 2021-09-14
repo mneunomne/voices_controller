@@ -36,7 +36,7 @@ class OscController {
     audioMessage.add(index);
     oscP5.send(audioMessage, remoteBroadcast);
 
-    println("[OscController] send play", audioText);
+    // println("[OscController] send play", audioText);
   }
 
   void sendOscEnd (String speakerId, String audioId) {
@@ -83,6 +83,7 @@ class OscController {
     // println("[OscController] new_audio_data", new_audio_data);
     // not use direct function to avoid threading
     newAudio = new_audio_data;
+    addedNewAudio = false;
     hasNewAudio = true;
     boolean is_disabled = false;
     if (new_audio_data.isNull("disabled") == false) {
@@ -136,6 +137,7 @@ class OscController {
     OscMessage visMessage = new OscMessage("/new_audio");
     visMessage.add(new_audio_data.toString());
     oscP5.send(visMessage, localBroadcast);
+    println("[OscController] sentNewAudio", new_audio_data.toString());
   }
   
 

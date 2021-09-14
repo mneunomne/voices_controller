@@ -67,7 +67,6 @@ class Archive {
     for (int i = 0; i < users.size(); i++) {
       String user_id = users.getJSONObject(i).getString("id");
       hasFound = hasFound || user_id.equals(new_user_id);
-      println(hasFound, new_user_id, user_id);
     }
 
     // if it is a new user...
