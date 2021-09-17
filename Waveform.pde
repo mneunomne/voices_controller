@@ -14,12 +14,13 @@ class WaveForm {
   int curBar = 0;
   int framecount = 0;
   boolean started_after_delay = false;
+  float scale = 1;
   // PGraphics wavecanvas;
   WaveForm(int _h) {
     h = _h;
     // make calculation of what range of value translate to the number of voices playing at the same time
     for (int i = 0; i < maxNumVoices; i++) {
-      bars[i] = (0.8 / maxNumVoices) * i;
+      bars[i] = (0.5 / maxNumVoices) * i;
     }
     framecount = int(cp5.getController("set_start_delay").getValue());
   }
